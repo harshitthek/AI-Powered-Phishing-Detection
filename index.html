@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="theme-dimmed">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,25 +8,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        primary: {
-                            50: '#f0fdfa',
-                            100: '#ccfbf1',
+                        brand: {
+                            400: '#2dd4bf',
                             500: '#14b8a6',
                             600: '#0d9488',
-                            700: '#0f766e',
-                            800: '#115e59',
-                            900: '#134e4a',
-                        },
-                        surface: {
-                            base: '#f8fafc',
-                            card: '#ffffff',
-                            subtle: '#f1f5f9',
-                            border: '#e2e8f0',
-                            text: '#0f172a',
-                            muted: '#64748b'
                         }
                     },
                     fontFamily: {
@@ -41,99 +30,121 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230d9488' stroke-width='2'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232dd4bf' stroke-width='2'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/></svg>">
 
     <style>
+        /* =========================================================
+           EYE-COMFORT THEMES: WARM DIMMED / SOFT SLATE
+           ========================================================= */
+        :root {
+            --bg-base: #1e222b;
+            --bg-card: #262b36;
+            --bg-subtle: #191c24;
+            --bg-hover: #303744;
+            --border-color: #363d4d;
+            --text-primary: #e6e9f0;
+            --text-secondary: #9aa2b2;
+            --text-muted: #6e7687;
+            --accent: #2dd4bf;
+            --accent-bg: rgba(45, 212, 191, 0.12);
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc;
-            color: #0f172a;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
             overflow-x: hidden;
+            transition: background-color 0.25s ease, color 0.25s ease;
         }
-        
-        /* Clean light scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        /* Animation utilities */
+        /* Subtle smooth scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-subtle); }
+        ::-webkit-scrollbar-thumb { background: #3c4455; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4e576d; }
+
+        .card-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.18);
+        }
+
+        .subtle-panel {
+            background-color: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Animation */
         @keyframes enterUp {
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-enter { animation: enterUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-        /* Radial Gauge animation */
+        /* Radial Gauge */
         .gauge-circle {
             transition: stroke-dashoffset 0.9s ease-in-out, stroke 0.4s ease;
             transform: rotate(-90deg);
             transform-origin: 50% 50%;
         }
-
-        .card-surface {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
-        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col selection:bg-teal-100 selection:text-teal-900 bg-[#f8fafc]">
+<body class="min-h-screen flex flex-col selection:bg-teal-500/25 selection:text-teal-200">
 
-    <!-- Top Global Header -->
-    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 px-4 sm:px-8 py-3.5 flex items-center justify-between shadow-sm">
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-[#1e222b]/90 border-b border-[#363d4d] px-4 sm:px-8 py-3.5 flex items-center justify-between shadow-sm">
         <div class="flex items-center space-x-3.5">
-            <div class="w-9 h-9 rounded-xl bg-teal-600 flex items-center justify-center text-white shadow-sm shadow-teal-600/20">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center text-[#191c24] font-bold shadow-md shadow-teal-500/10">
+                <svg class="w-5 h-5 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
             </div>
             <div>
                 <div class="flex items-center gap-2">
-                    <span class="text-base font-bold tracking-tight text-slate-900">PhishShield AI</span>
-                    <span class="text-[11px] font-mono font-semibold bg-teal-50 text-teal-700 border border-teal-200 px-1.5 py-0.5 rounded">v2.1</span>
+                    <span class="text-base font-bold tracking-tight text-[#e6e9f0]">PhishShield AI</span>
+                    <span class="text-[10px] font-mono font-semibold bg-teal-500/15 text-teal-300 border border-teal-500/30 px-1.5 py-0.5 rounded">v2.1</span>
                 </div>
-                <p class="text-[11px] text-slate-500 font-normal">Intelligent Email Threat & Impersonation Defense</p>
+                <p class="text-[11px] text-[#9aa2b2] font-normal">Intelligent Email Security & Heuristic Threat Defense</p>
             </div>
         </div>
 
-        <!-- Navigation Tabs (Desktop) -->
-        <nav class="hidden md:flex items-center bg-slate-100/90 border border-slate-200/80 rounded-xl p-1 text-xs font-medium text-slate-600">
-            <button onclick="setTab('scanner')" id="tab-scanner" class="px-3.5 py-1.5 rounded-lg bg-white text-teal-800 font-semibold shadow-sm border border-slate-200/60 transition">
+        <!-- Navigation Tabs -->
+        <nav class="hidden md:flex items-center bg-[#191c24] border border-[#363d4d] rounded-xl p-1 text-xs font-medium text-[#9aa2b2]">
+            <button onclick="setTab('scanner')" id="tab-scanner" class="px-3.5 py-1.5 rounded-lg bg-[#262b36] text-teal-300 font-semibold shadow-sm border border-[#363d4d] transition">
                 Email Scanner
             </button>
-            <button onclick="setTab('links')" id="tab-links" class="px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">
+            <button onclick="setTab('links')" id="tab-links" class="px-3.5 py-1.5 rounded-lg text-[#9aa2b2] hover:text-[#e6e9f0] transition">
                 Link & Domain Inspector
             </button>
-            <button onclick="setTab('batch')" id="tab-batch" class="px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">
+            <button onclick="setTab('batch')" id="tab-batch" class="px-3.5 py-1.5 rounded-lg text-[#9aa2b2] hover:text-[#e6e9f0] transition">
                 Batch Scanner
             </button>
-            <button onclick="setTab('metrics')" id="tab-metrics" class="px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">
+            <button onclick="setTab('metrics')" id="tab-metrics" class="px-3.5 py-1.5 rounded-lg text-[#9aa2b2] hover:text-[#e6e9f0] transition">
                 ML Diagnostics
             </button>
         </nav>
 
-        <!-- Live Server Status & Docs Link -->
+        <!-- Live Server Status & Docs -->
         <div class="flex items-center space-x-3">
-            <a href="/docs" target="_blank" class="hidden sm:flex items-center gap-1.5 text-xs text-slate-600 hover:text-teal-700 border border-slate-200 hover:border-slate-300 bg-white px-3 py-1.5 rounded-lg transition shadow-xs">
-                <svg class="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <a href="/docs" target="_blank" class="hidden sm:flex items-center gap-1.5 text-xs text-[#9aa2b2] hover:text-teal-300 border border-[#363d4d] hover:border-[#4e576d] bg-[#191c24] px-3 py-1.5 rounded-lg transition">
+                <svg class="w-3.5 h-3.5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                 </svg>
                 <span>Swagger Docs</span>
             </a>
-            <div class="flex items-center space-x-2 bg-white border border-slate-200 px-2.5 py-1.5 rounded-lg shadow-xs">
-                <span id="status-dot" class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                <span id="status-text" class="text-[11px] font-mono font-medium text-slate-600">Connecting...</span>
+            <div class="flex items-center space-x-2 bg-[#191c24] border border-[#363d4d] px-2.5 py-1.5 rounded-lg">
+                <span id="status-dot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                <span id="status-text" class="text-[11px] font-mono font-medium text-[#9aa2b2]">Connecting...</span>
             </div>
         </div>
     </header>
 
     <!-- Mobile Nav Bar -->
-    <div class="md:hidden w-full bg-white border-b border-slate-200 px-4 py-2 flex items-center justify-between text-xs overflow-x-auto gap-2 shadow-xs">
-        <button onclick="setTab('scanner')" id="mob-tab-scanner" class="px-2.5 py-1 rounded bg-teal-700 text-white font-medium whitespace-nowrap">Scanner</button>
-        <button onclick="setTab('links')" id="mob-tab-links" class="px-2.5 py-1 rounded text-slate-600 whitespace-nowrap">Inspector</button>
-        <button onclick="setTab('batch')" id="mob-tab-batch" class="px-2.5 py-1 rounded text-slate-600 whitespace-nowrap">Batch</button>
-        <button onclick="setTab('metrics')" id="mob-tab-metrics" class="px-2.5 py-1 rounded text-slate-600 whitespace-nowrap">Metrics</button>
+    <div class="md:hidden w-full bg-[#191c24] border-b border-[#363d4d] px-4 py-2 flex items-center justify-between text-xs overflow-x-auto gap-2">
+        <button onclick="setTab('scanner')" id="mob-tab-scanner" class="px-2.5 py-1 rounded bg-teal-600 text-white font-medium whitespace-nowrap">Scanner</button>
+        <button onclick="setTab('links')" id="mob-tab-links" class="px-2.5 py-1 rounded text-[#9aa2b2] whitespace-nowrap">Inspector</button>
+        <button onclick="setTab('batch')" id="mob-tab-batch" class="px-2.5 py-1 rounded text-[#9aa2b2] whitespace-nowrap">Batch</button>
+        <button onclick="setTab('metrics')" id="mob-tab-metrics" class="px-2.5 py-1 rounded text-[#9aa2b2] whitespace-nowrap">Metrics</button>
     </div>
 
     <!-- Main Content Container -->
@@ -144,65 +155,65 @@
         <!-- ============================================================= -->
         <div id="view-scanner" class="space-y-6">
 
-            <!-- Presets Bar -->
-            <div class="card-surface rounded-2xl p-4 sm:p-5">
+            <!-- Presets Row -->
+            <div class="card-panel rounded-2xl p-4 sm:p-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                    <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                        <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span class="text-xs font-bold text-[#e6e9f0] uppercase tracking-wider flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                         Test Threat Scenarios:
                     </span>
-                    <span class="text-[11px] text-slate-500">1-click simulation with realistic brand impersonation & safe messages</span>
+                    <span class="text-[11px] text-[#9aa2b2]">1-click simulation with realistic brand impersonation & safe messages</span>
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-                    <button type="button" onclick="loadPreset('bank')" class="p-2.5 bg-slate-50 hover:bg-rose-50/70 border border-slate-200 hover:border-rose-200 rounded-xl text-left transition group">
-                        <div class="flex items-center justify-between text-xs font-semibold text-slate-800 group-hover:text-rose-700">
+                    <button type="button" onclick="loadPreset('bank')" class="p-2.5 bg-[#191c24] hover:bg-[#303744] border border-[#363d4d] hover:border-red-500/50 rounded-xl text-left transition group">
+                        <div class="flex items-center justify-between text-xs font-semibold text-[#e6e9f0] group-hover:text-red-300">
                             <span>PayPal Alert</span>
-                            <span class="text-[10px] text-rose-700 bg-rose-100/80 px-1.5 py-0.2 rounded font-medium">Phish</span>
+                            <span class="text-[10px] text-red-300 bg-red-950/60 border border-red-800/40 px-1.5 py-0.2 rounded font-medium">Phish</span>
                         </div>
-                        <p class="text-[10px] text-slate-500 truncate mt-0.5">Account locked spoof</p>
+                        <p class="text-[10px] text-[#9aa2b2] truncate mt-0.5">Account locked spoof</p>
                     </button>
 
-                    <button type="button" onclick="loadPreset('giftcard')" class="p-2.5 bg-slate-50 hover:bg-amber-50/70 border border-slate-200 hover:border-amber-200 rounded-xl text-left transition group">
-                        <div class="flex items-center justify-between text-xs font-semibold text-slate-800 group-hover:text-amber-700">
+                    <button type="button" onclick="loadPreset('giftcard')" class="p-2.5 bg-[#191c24] hover:bg-[#303744] border border-[#363d4d] hover:border-amber-500/50 rounded-xl text-left transition group">
+                        <div class="flex items-center justify-between text-xs font-semibold text-[#e6e9f0] group-hover:text-amber-300">
                             <span>Amazon Voucher</span>
-                            <span class="text-[10px] text-amber-700 bg-amber-100/80 px-1.5 py-0.2 rounded font-medium">Scam</span>
+                            <span class="text-[10px] text-amber-300 bg-amber-950/60 border border-amber-800/40 px-1.5 py-0.2 rounded font-medium">Scam</span>
                         </div>
-                        <p class="text-[10px] text-slate-500 truncate mt-0.5">$1,000 gift card</p>
+                        <p class="text-[10px] text-[#9aa2b2] truncate mt-0.5">$1,000 gift card</p>
                     </button>
 
-                    <button type="button" onclick="loadPreset('bec_ceo')" class="p-2.5 bg-slate-50 hover:bg-rose-50/70 border border-slate-200 hover:border-rose-200 rounded-xl text-left transition group">
-                        <div class="flex items-center justify-between text-xs font-semibold text-slate-800 group-hover:text-rose-700">
+                    <button type="button" onclick="loadPreset('bec_ceo')" class="p-2.5 bg-[#191c24] hover:bg-[#303744] border border-[#363d4d] hover:border-rose-500/50 rounded-xl text-left transition group">
+                        <div class="flex items-center justify-between text-xs font-semibold text-[#e6e9f0] group-hover:text-rose-300">
                             <span>CEO Wire Fraud</span>
-                            <span class="text-[10px] text-rose-700 bg-rose-100/80 px-1.5 py-0.2 rounded font-medium">BEC</span>
+                            <span class="text-[10px] text-rose-300 bg-rose-950/60 border border-rose-800/40 px-1.5 py-0.2 rounded font-medium">BEC</span>
                         </div>
-                        <p class="text-[10px] text-slate-500 truncate mt-0.5">Urgent wire transfer</p>
+                        <p class="text-[10px] text-[#9aa2b2] truncate mt-0.5">Urgent wire transfer</p>
                     </button>
 
-                    <button type="button" onclick="loadPreset('crypto')" class="p-2.5 bg-slate-50 hover:bg-purple-50/70 border border-slate-200 hover:border-purple-200 rounded-xl text-left transition group">
-                        <div class="flex items-center justify-between text-xs font-semibold text-slate-800 group-hover:text-purple-700">
+                    <button type="button" onclick="loadPreset('crypto')" class="p-2.5 bg-[#191c24] hover:bg-[#303744] border border-[#363d4d] hover:border-purple-500/50 rounded-xl text-left transition group">
+                        <div class="flex items-center justify-between text-xs font-semibold text-[#e6e9f0] group-hover:text-purple-300">
                             <span>Binance Airdrop</span>
-                            <span class="text-[10px] text-purple-700 bg-purple-100/80 px-1.5 py-0.2 rounded font-medium">Web3</span>
+                            <span class="text-[10px] text-purple-300 bg-purple-950/60 border border-purple-800/40 px-1.5 py-0.2 rounded font-medium">Web3</span>
                         </div>
-                        <p class="text-[10px] text-slate-500 truncate mt-0.5">Fake ETH reward</p>
+                        <p class="text-[10px] text-[#9aa2b2] truncate mt-0.5">Fake ETH reward</p>
                     </button>
 
-                    <button type="button" onclick="loadPreset('work')" class="p-2.5 bg-slate-50 hover:bg-emerald-50/70 border border-slate-200 hover:border-emerald-200 rounded-xl text-left transition group">
-                        <div class="flex items-center justify-between text-xs font-semibold text-slate-800 group-hover:text-emerald-700">
+                    <button type="button" onclick="loadPreset('work')" class="p-2.5 bg-[#191c24] hover:bg-[#303744] border border-[#363d4d] hover:border-emerald-500/50 rounded-xl text-left transition group">
+                        <div class="flex items-center justify-between text-xs font-semibold text-[#e6e9f0] group-hover:text-emerald-300">
                             <span>Google Sync</span>
-                            <span class="text-[10px] text-emerald-700 bg-emerald-100/80 px-1.5 py-0.2 rounded font-medium">Safe</span>
+                            <span class="text-[10px] text-emerald-300 bg-emerald-950/60 border border-emerald-800/40 px-1.5 py-0.2 rounded font-medium">Safe</span>
                         </div>
-                        <p class="text-[10px] text-slate-500 truncate mt-0.5">Sprint planning notes</p>
+                        <p class="text-[10px] text-[#9aa2b2] truncate mt-0.5">Sprint planning notes</p>
                     </button>
 
-                    <button type="button" onclick="loadPreset('delivery')" class="p-2.5 bg-slate-50 hover:bg-teal-50/70 border border-slate-200 hover:border-teal-200 rounded-xl text-left transition group">
-                        <div class="flex items-center justify-between text-xs font-semibold text-slate-800 group-hover:text-teal-700">
+                    <button type="button" onclick="loadPreset('delivery')" class="p-2.5 bg-[#191c24] hover:bg-[#303744] border border-[#363d4d] hover:border-teal-500/50 rounded-xl text-left transition group">
+                        <div class="flex items-center justify-between text-xs font-semibold text-[#e6e9f0] group-hover:text-teal-300">
                             <span>Amazon Order</span>
-                            <span class="text-[10px] text-teal-700 bg-teal-100/80 px-1.5 py-0.2 rounded font-medium">Safe</span>
+                            <span class="text-[10px] text-teal-300 bg-teal-950/60 border border-teal-800/40 px-1.5 py-0.2 rounded font-medium">Safe</span>
                         </div>
-                        <p class="text-[10px] text-slate-500 truncate mt-0.5">Package tracking slip</p>
+                        <p class="text-[10px] text-[#9aa2b2] truncate mt-0.5">Package tracking slip</p>
                     </button>
                 </div>
             </div>
@@ -212,15 +223,15 @@
 
                 <!-- Left Column: Input Payload (7 Cols) -->
                 <div class="lg:col-span-7 space-y-4">
-                    <div class="card-surface rounded-2xl p-5 sm:p-7 shadow-xs">
-                        <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-200">
-                            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
-                                <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="card-panel rounded-2xl p-5 sm:p-7 shadow-lg">
+                        <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#363d4d]">
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-[#e6e9f0] flex items-center gap-2">
+                                <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                 </svg>
                                 Email Payload Details
                             </h2>
-                            <button type="button" onclick="clearForm()" class="text-xs text-slate-500 hover:text-slate-800 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200/80 transition">
+                            <button type="button" onclick="clearForm()" class="text-xs text-[#9aa2b2] hover:text-[#e6e9f0] px-2.5 py-1 rounded-lg bg-[#191c24] hover:bg-[#303744] border border-[#363d4d] transition">
                                 Clear
                             </button>
                         </div>
@@ -229,59 +240,59 @@
                             <!-- Sender & Subject -->
                             <div class="space-y-3.5">
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    <label class="block text-xs font-semibold text-[#c5cbd6] uppercase tracking-wider mb-1.5">
                                         Sender Address
                                     </label>
                                     <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#6e7687]">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                                             </svg>
                                         </div>
                                         <input type="email" id="input-sender" placeholder="security-alert@paypal-update-center.net" required
-                                               class="w-full bg-slate-50/70 border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent font-mono transition">
+                                               class="w-full bg-[#191c24] border border-[#363d4d] rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-[#e6e9f0] placeholder-[#6e7687] focus:bg-[#202530] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent font-mono transition">
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    <label class="block text-xs font-semibold text-[#c5cbd6] uppercase tracking-wider mb-1.5">
                                         Subject Header
                                     </label>
                                     <input type="text" id="input-subject" placeholder="URGENT: Your PayPal Account Has Been Suspended" required
-                                           class="w-full bg-slate-50/70 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent transition">
+                                           class="w-full bg-[#191c24] border border-[#363d4d] rounded-xl px-4 py-2.5 text-xs sm:text-sm text-[#e6e9f0] placeholder-[#6e7687] focus:bg-[#202530] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition">
                                 </div>
                             </div>
 
                             <!-- Body Text -->
                             <div>
                                 <div class="flex items-center justify-between mb-1.5">
-                                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                                    <label class="block text-xs font-semibold text-[#c5cbd6] uppercase tracking-wider">
                                         Email Body Content
                                     </label>
-                                    <span id="body-char-count" class="text-[11px] font-mono text-slate-400">0 characters</span>
+                                    <span id="body-char-count" class="text-[11px] font-mono text-[#6e7687]">0 characters</span>
                                 </div>
                                 <textarea id="input-body" rows="7" placeholder="Paste full email message with embedded links and text..." required
-                                          class="w-full bg-slate-50/70 border border-slate-300 rounded-xl p-4 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent transition resize-y leading-relaxed font-sans"></textarea>
+                                          class="w-full bg-[#191c24] border border-[#363d4d] rounded-xl p-4 text-xs sm:text-sm text-[#e6e9f0] placeholder-[#6e7687] focus:bg-[#202530] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition resize-y leading-relaxed font-sans"></textarea>
                             </div>
 
                             <!-- Sensitivity Slider -->
-                            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <div class="subtle-panel rounded-xl p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
                                 <div>
-                                    <div class="text-xs font-semibold text-slate-800">Sensitivity Threshold:</div>
-                                    <p class="text-[11px] text-slate-500">Decision boundary for phishing risk (Default: 0.50)</p>
+                                    <div class="text-xs font-semibold text-[#e6e9f0]">Sensitivity Threshold:</div>
+                                    <p class="text-[11px] text-[#9aa2b2]">Decision boundary for phishing risk (Default: 0.50)</p>
                                 </div>
                                 <div class="flex items-center space-x-3 w-full sm:w-auto">
                                     <input type="range" id="input-threshold" min="0.1" max="0.9" step="0.05" value="0.5"
-                                           class="w-full sm:w-32 accent-teal-600 cursor-pointer">
-                                    <span id="val-threshold" class="text-xs font-mono font-bold bg-white text-teal-800 px-2 py-0.5 rounded border border-slate-200 shadow-xs">0.50</span>
+                                           class="w-full sm:w-32 accent-teal-400 cursor-pointer">
+                                    <span id="val-threshold" class="text-xs font-mono font-bold bg-[#262b36] text-teal-300 px-2 py-0.5 rounded border border-[#363d4d]">0.50</span>
                                 </div>
                             </div>
 
                             <!-- Submit Button -->
                             <button type="submit" id="btn-scan"
-                                    class="w-full bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm sm:text-base py-3.5 px-6 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center space-x-2">
+                                    class="w-full bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-slate-950 font-bold text-sm sm:text-base py-3.5 px-6 rounded-xl shadow-lg shadow-teal-900/20 transition flex items-center justify-center space-x-2">
                                 <span id="btn-scan-text">Analyze Email Threat Level</span>
-                                <div id="btn-scan-loader" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin hidden"></div>
+                                <div id="btn-scan-loader" class="w-4 h-4 border-2 border-slate-900/30 border-t-slate-900 rounded-full animate-spin hidden"></div>
                             </button>
                         </form>
                     </div>
@@ -291,15 +302,15 @@
                 <div class="lg:col-span-5 space-y-4">
                     
                     <!-- Default Placeholder State -->
-                    <div id="result-placeholder" class="card-surface rounded-2xl p-8 text-center space-y-4 flex flex-col items-center justify-center min-h-[440px]">
-                        <div class="w-16 h-16 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600">
+                    <div id="result-placeholder" class="card-panel rounded-2xl p-8 text-center space-y-4 flex flex-col items-center justify-center min-h-[440px]">
+                        <div class="w-16 h-16 rounded-2xl bg-[#191c24] border border-[#363d4d] flex items-center justify-center text-teal-400/70 shadow-inner">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                         </div>
                         <div class="space-y-1 max-w-xs">
-                            <h3 class="text-sm font-bold text-slate-800">Awaiting Email Scan</h3>
-                            <p class="text-xs text-slate-500">Select a preset scenario above or enter email content to view real-time threat scores, link analyses, and diagnostic explanations.</p>
+                            <h3 class="text-sm font-bold text-[#e6e9f0]">Awaiting Email Payload</h3>
+                            <p class="text-xs text-[#9aa2b2]">Select a preset scenario above or enter email content to view real-time threat scores, link analyses, and diagnostic explanations.</p>
                         </div>
                     </div>
 
@@ -307,12 +318,12 @@
                     <div id="result-active" class="hidden space-y-4 animate-enter">
 
                         <!-- Main Verdict Card with Circular Gauge -->
-                        <div id="verdict-card" class="card-surface rounded-2xl p-6 shadow-xs space-y-5">
+                        <div id="verdict-card" class="card-panel rounded-2xl p-6 shadow-lg space-y-5">
                             
-                            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <div class="flex items-center justify-between pb-3 border-b border-[#363d4d]">
                                 <div>
-                                    <span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold block">Analysis Verdict</span>
-                                    <h3 id="verdict-title" class="text-xl font-extrabold text-slate-900 mt-0.5">Calculating...</h3>
+                                    <span class="text-[10px] uppercase tracking-widest text-[#9aa2b2] font-bold block">Analysis Verdict</span>
+                                    <h3 id="verdict-title" class="text-xl font-extrabold text-[#e6e9f0] mt-0.5">Calculating...</h3>
                                 </div>
                                 <span id="verdict-badge" class="px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider">
                                     --
@@ -325,53 +336,53 @@
                                 <div class="relative w-28 h-28 flex items-center justify-center flex-shrink-0">
                                     <svg class="w-28 h-28" viewBox="0 0 100 100">
                                         <!-- Background Circle -->
-                                        <circle cx="50" cy="50" r="40" stroke="#e2e8f0" stroke-width="8" fill="transparent" />
+                                        <circle cx="50" cy="50" r="40" stroke="#363d4d" stroke-width="8" fill="transparent" />
                                         <!-- Progress Circle -->
-                                        <circle id="gauge-progress" class="gauge-circle" cx="50" cy="50" r="40" stroke="#e11d48" stroke-width="8" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" fill="transparent" />
+                                        <circle id="gauge-progress" class="gauge-circle" cx="50" cy="50" r="40" stroke="#f87171" stroke-width="8" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" fill="transparent" />
                                     </svg>
                                     <div class="absolute flex flex-col items-center justify-center text-center">
-                                        <span id="gauge-value" class="text-2xl font-extrabold font-mono text-slate-900">0%</span>
-                                        <span class="text-[9px] uppercase font-semibold text-slate-500 tracking-wider">Threat Score</span>
+                                        <span id="gauge-value" class="text-2xl font-extrabold font-mono text-[#e6e9f0]">0%</span>
+                                        <span class="text-[9px] uppercase font-semibold text-[#9aa2b2] tracking-wider">Threat Score</span>
                                     </div>
                                 </div>
 
                                 <!-- Key Summary Metrics -->
                                 <div class="flex-1 w-full space-y-2 text-xs">
-                                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
-                                        <span class="text-slate-600">Sender Authenticity:</span>
-                                        <span id="summary-sender-trust" class="font-semibold font-mono text-slate-900">--</span>
+                                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#191c24] border border-[#363d4d]">
+                                        <span class="text-[#9aa2b2]">Sender Authenticity:</span>
+                                        <span id="summary-sender-trust" class="font-semibold font-mono text-[#e6e9f0]">--</span>
                                     </div>
-                                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
-                                        <span class="text-slate-600">Embedded Links:</span>
-                                        <span id="summary-link-count" class="font-semibold font-mono text-slate-900">0 found</span>
+                                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#191c24] border border-[#363d4d]">
+                                        <span class="text-[#9aa2b2]">Embedded Links:</span>
+                                        <span id="summary-link-count" class="font-semibold font-mono text-[#e6e9f0]">0 found</span>
                                     </div>
-                                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
-                                        <span class="text-slate-600">Brand Impersonation:</span>
-                                        <span id="summary-typo" class="font-semibold font-mono text-slate-900">None</span>
+                                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#191c24] border border-[#363d4d]">
+                                        <span class="text-[#9aa2b2]">Brand Spoofing:</span>
+                                        <span id="summary-typo" class="font-semibold font-mono text-[#e6e9f0]">None</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Diagnostic Explanations Card -->
-                        <div class="card-surface rounded-2xl p-5 sm:p-6 space-y-3">
-                            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center justify-between">
+                        <div class="card-panel rounded-2xl p-5 sm:p-6 space-y-3">
+                            <h4 class="text-xs font-bold text-[#e6e9f0] uppercase tracking-wider flex items-center justify-between">
                                 <span>Explainable Security Findings</span>
-                                <span id="findings-count" class="text-[10px] font-mono text-slate-500">0 factors</span>
+                                <span id="findings-count" class="text-[10px] font-mono text-[#9aa2b2]">0 factors</span>
                             </h4>
                             <ul id="findings-list" class="space-y-2"></ul>
                         </div>
 
                         <!-- Detected URLs Card -->
-                        <div id="urls-container" class="hidden card-surface rounded-2xl p-5 sm:p-6 space-y-3">
-                            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Embedded Links Inspection</h4>
+                        <div id="urls-container" class="hidden card-panel rounded-2xl p-5 sm:p-6 space-y-3">
+                            <h4 class="text-xs font-bold text-[#e6e9f0] uppercase tracking-wider">Embedded Links Inspection</h4>
                             <div id="urls-list" class="space-y-2.5"></div>
                         </div>
 
                         <!-- Copy Incident Report Action -->
                         <div class="flex items-center gap-2">
-                            <button type="button" onclick="copyReport()" id="btn-copy-report" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 transition flex items-center justify-center gap-2">
-                                <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <button type="button" onclick="copyReport()" id="btn-copy-report" class="flex-1 py-2.5 bg-[#191c24] hover:bg-[#303744] border border-[#363d4d] rounded-xl text-xs font-semibold text-[#e6e9f0] transition flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                                 </svg>
                                 <span>Copy Threat Report</span>
@@ -389,32 +400,32 @@
         <!-- TAB 2: STANDALONE LINK & DOMAIN INSPECTOR -->
         <!-- ============================================================= -->
         <div id="view-links" class="hidden space-y-6 animate-enter">
-            <div class="card-surface rounded-2xl p-6 sm:p-8 space-y-6">
+            <div class="card-panel rounded-2xl p-6 sm:p-8 space-y-6">
                 <div>
-                    <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <h3 class="text-base font-bold text-[#e6e9f0] flex items-center gap-2">
                         <span>🔗</span> Standalone URL & Domain Security Inspector
                     </h3>
-                    <p class="text-xs text-slate-500 mt-1">Directly inspect isolated URLs or sender domains for IP hosting, high-risk TLDs, and typosquatting attacks.</p>
+                    <p class="text-xs text-[#9aa2b2] mt-1">Directly inspect isolated URLs or sender domains for IP hosting, high-risk TLDs, and typosquatting attacks.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- URL Scanner Box -->
-                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3.5">
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Inspect URL Link</label>
+                    <div class="subtle-panel p-5 rounded-2xl space-y-3.5">
+                        <label class="block text-xs font-bold text-[#c5cbd6] uppercase tracking-wider">Inspect URL Link</label>
                         <input type="text" id="inspector-url-input" placeholder="http://paypal-security-verification.xyz/login"
-                               class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 placeholder-slate-400 font-mono focus:outline-none focus:ring-2 focus:ring-teal-600">
-                        <button type="button" onclick="runDirectUrlInspect()" class="w-full py-2.5 bg-teal-700 hover:bg-teal-800 text-white rounded-xl text-xs font-bold transition shadow-xs">
+                               class="w-full bg-[#262b36] border border-[#363d4d] rounded-xl px-3.5 py-2.5 text-xs text-[#e6e9f0] placeholder-[#6e7687] font-mono focus:outline-none focus:ring-2 focus:ring-teal-500">
+                        <button type="button" onclick="runDirectUrlInspect()" class="w-full py-2.5 bg-teal-600 hover:bg-teal-500 text-slate-950 font-bold rounded-xl text-xs transition shadow-sm">
                             Inspect URL Heuristics
                         </button>
                         <div id="inspector-url-result" class="hidden pt-2"></div>
                     </div>
 
                     <!-- Domain Scanner Box -->
-                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3.5">
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Inspect Domain / Email</label>
+                    <div class="subtle-panel p-5 rounded-2xl space-y-3.5">
+                        <label class="block text-xs font-bold text-[#c5cbd6] uppercase tracking-wider">Inspect Domain / Email</label>
                         <input type="text" id="inspector-domain-input" placeholder="support@paypa1-update.com"
-                               class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 placeholder-slate-400 font-mono focus:outline-none focus:ring-2 focus:ring-teal-600">
-                        <button type="button" onclick="runDirectDomainInspect()" class="w-full py-2.5 bg-teal-700 hover:bg-teal-800 text-white rounded-xl text-xs font-bold transition shadow-xs">
+                               class="w-full bg-[#262b36] border border-[#363d4d] rounded-xl px-3.5 py-2.5 text-xs text-[#e6e9f0] placeholder-[#6e7687] font-mono focus:outline-none focus:ring-2 focus:ring-teal-500">
+                        <button type="button" onclick="runDirectDomainInspect()" class="w-full py-2.5 bg-teal-600 hover:bg-teal-500 text-slate-950 font-bold rounded-xl text-xs transition shadow-sm">
                             Check Domain Authenticity
                         </button>
                         <div id="inspector-domain-result" class="hidden pt-2"></div>
@@ -428,15 +439,15 @@
         <!-- TAB 3: BATCH SCANNER -->
         <!-- ============================================================= -->
         <div id="view-batch" class="hidden space-y-6 animate-enter">
-            <div class="card-surface rounded-2xl p-6 sm:p-8 space-y-5">
+            <div class="card-panel rounded-2xl p-6 sm:p-8 space-y-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
-                        <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <h3 class="text-base font-bold text-[#e6e9f0] flex items-center gap-2">
                             <span>⚡</span> Batch Email Security Scanner
                         </h3>
-                        <p class="text-xs text-slate-500 mt-1">Submit multiple emails in JSON format for automated high-speed threat scanning.</p>
+                        <p class="text-xs text-[#9aa2b2] mt-1">Submit multiple emails in JSON format for automated high-speed threat scanning.</p>
                     </div>
-                    <button type="button" onclick="loadBatchSampleJson()" class="text-xs bg-slate-100 hover:bg-slate-200 text-teal-800 px-3 py-1.5 rounded-lg border border-slate-200 transition font-medium">
+                    <button type="button" onclick="loadBatchSampleJson()" class="text-xs bg-[#191c24] hover:bg-[#303744] text-teal-300 px-3 py-1.5 rounded-lg border border-[#363d4d] transition font-medium">
                         Insert Sample Batch JSON
                     </button>
                 </div>
@@ -444,9 +455,9 @@
                 <textarea id="batch-json-input" rows="8" placeholder='[
   { "sender": "security-alert@paypal-update-center.net", "subject": "Account Locked", "email_text": "Verify at http://paypal-auth.xyz" },
   { "sender": "alex.chen@google.com", "subject": "Sprint planning sync", "email_text": "Notes from our morning sync attached." }
-]' class="w-full bg-slate-50 border border-slate-300 rounded-xl p-4 text-xs font-mono text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-600"></textarea>
+]' class="w-full bg-[#191c24] border border-[#363d4d] rounded-xl p-4 text-xs font-mono text-[#e6e9f0] placeholder-[#6e7687] focus:bg-[#202530] focus:outline-none focus:ring-2 focus:ring-teal-500"></textarea>
 
-                <button type="button" onclick="submitBatchAnalysis()" id="btn-batch-scan" class="w-full py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm rounded-xl transition shadow-xs">
+                <button type="button" onclick="submitBatchAnalysis()" id="btn-batch-scan" class="w-full py-3 bg-teal-600 hover:bg-teal-500 text-slate-950 font-bold text-sm rounded-xl transition shadow-md">
                     Run Batch Intelligence Scan
                 </button>
 
@@ -459,44 +470,44 @@
         <!-- TAB 4: ML DIAGNOSTICS & METRICS -->
         <!-- ============================================================= -->
         <div id="view-metrics" class="hidden space-y-6 animate-enter">
-            <div class="card-surface rounded-2xl p-6 sm:p-8 space-y-6">
+            <div class="card-panel rounded-2xl p-6 sm:p-8 space-y-6">
                 <div>
-                    <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <h3 class="text-base font-bold text-[#e6e9f0] flex items-center gap-2">
                         <span>📊</span> Machine Learning Model Specifications
                     </h3>
-                    <p class="text-xs text-slate-500 mt-1">Architecture parameters, feature extraction matrix, and cross-validation performance.</p>
+                    <p class="text-xs text-[#9aa2b2] mt-1">Architecture parameters, feature extraction matrix, and cross-validation performance.</p>
                 </div>
 
                 <!-- Stats Counters -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 text-center space-y-1">
-                        <span class="text-xs uppercase font-bold text-slate-500 tracking-wider">Test Set Accuracy</span>
-                        <div class="text-3xl font-extrabold font-mono text-emerald-600">100.0%</div>
-                        <p class="text-[11px] text-slate-500">Holdout evaluation split</p>
+                    <div class="subtle-panel p-5 rounded-2xl text-center space-y-1">
+                        <span class="text-xs uppercase font-bold text-[#9aa2b2] tracking-wider">Test Set Accuracy</span>
+                        <div class="text-3xl font-extrabold font-mono text-emerald-400">100.0%</div>
+                        <p class="text-[11px] text-[#6e7687]">Holdout evaluation split</p>
                     </div>
-                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 text-center space-y-1">
-                        <span class="text-xs uppercase font-bold text-slate-500 tracking-wider">5-Fold Stratified CV</span>
-                        <div class="text-3xl font-extrabold font-mono text-teal-700">94.3%</div>
-                        <p class="text-[11px] text-slate-500">Mean F1-Score: 93.3%</p>
+                    <div class="subtle-panel p-5 rounded-2xl text-center space-y-1">
+                        <span class="text-xs uppercase font-bold text-[#9aa2b2] tracking-wider">5-Fold Stratified CV</span>
+                        <div class="text-3xl font-extrabold font-mono text-teal-300">94.3%</div>
+                        <p class="text-[11px] text-[#6e7687]">Mean F1-Score: 93.3%</p>
                     </div>
-                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 text-center space-y-1">
-                        <span class="text-xs uppercase font-bold text-slate-500 tracking-wider">Ensemble Trees</span>
-                        <div class="text-3xl font-extrabold font-mono text-indigo-600">250 Trees</div>
-                        <p class="text-[11px] text-slate-500">Balanced Random Forest</p>
+                    <div class="subtle-panel p-5 rounded-2xl text-center space-y-1">
+                        <span class="text-xs uppercase font-bold text-[#9aa2b2] tracking-wider">Ensemble Trees</span>
+                        <div class="text-3xl font-extrabold font-mono text-purple-300">250 Trees</div>
+                        <p class="text-[11px] text-[#6e7687]">Balanced Random Forest</p>
                     </div>
                 </div>
 
                 <!-- Pipeline Architecture Breakdown -->
-                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
-                    <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Dual-Engine Pipeline Breakdown</h4>
+                <div class="subtle-panel p-5 rounded-2xl space-y-4">
+                    <h4 class="text-xs font-bold text-[#e6e9f0] uppercase tracking-wider">Dual-Engine Pipeline Breakdown</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                        <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1.5">
-                            <div class="font-bold text-teal-800">1. Sublinear TF-IDF N-grams</div>
-                            <p class="text-slate-600">Unigrams and bigrams with sublinear term-frequency scaling and English stopword pruning up to 3,000 vocabulary dimensions.</p>
+                        <div class="p-3.5 bg-[#262b36] rounded-xl border border-[#363d4d] space-y-1.5">
+                            <div class="font-bold text-teal-300">1. Sublinear TF-IDF N-grams</div>
+                            <p class="text-[#9aa2b2]">Unigrams and bigrams with sublinear term-frequency scaling and English stopword pruning up to 3,000 vocabulary dimensions.</p>
                         </div>
-                        <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1.5">
-                            <div class="font-bold text-teal-800">2. Heuristic Signal Matrix</div>
-                            <p class="text-slate-600">15 structural signals: URL counts, raw IP hosting, high-risk TLDs, URL shorteners, domain entropy, typosquatting checks, and urgency densities.</p>
+                        <div class="p-3.5 bg-[#262b36] rounded-xl border border-[#363d4d] space-y-1.5">
+                            <div class="font-bold text-teal-300">2. Heuristic Signal Matrix</div>
+                            <p class="text-[#9aa2b2]">15 structural signals: URL counts, raw IP hosting, high-risk TLDs, URL shorteners, domain entropy, typosquatting checks, and urgency densities.</p>
                         </div>
                     </div>
                 </div>
@@ -506,14 +517,14 @@
     </main>
 
     <!-- Global Toast Notification -->
-    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-xl flex items-center gap-2">
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-[#262b36] border border-[#363d4d] text-[#e6e9f0] text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2">
         <span id="toast-icon">✅</span>
         <span id="toast-msg">Notification message</span>
     </div>
 
     <!-- Footer -->
-    <footer class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-xs text-slate-500 border-t border-slate-200">
-        <p>PhishShield AI &bull; Production Machine Learning Phishing Defense &bull; Developed by <span class="text-slate-700 font-medium">harshitthek</span></p>
+    <footer class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-xs text-[#6e7687] border-t border-[#363d4d]">
+        <p>PhishShield AI &bull; Production Machine Learning Phishing Defense &bull; Developed by <span class="text-[#9aa2b2] font-medium">harshitthek</span></p>
     </footer>
 
     <!-- Interactive Frontend Controller -->
@@ -542,12 +553,12 @@
                 
                 if (t === tabId) {
                     view.classList.remove('hidden');
-                    if (tabBtn) tabBtn.className = 'px-3.5 py-1.5 rounded-lg bg-white text-teal-800 font-semibold shadow-sm border border-slate-200/60 transition';
-                    if (mobTabBtn) mobTabBtn.className = 'px-2.5 py-1 rounded bg-teal-700 text-white font-medium whitespace-nowrap';
+                    if (tabBtn) tabBtn.className = 'px-3.5 py-1.5 rounded-lg bg-[#262b36] text-teal-300 font-semibold shadow-sm border border-[#363d4d] transition';
+                    if (mobTabBtn) mobTabBtn.className = 'px-2.5 py-1 rounded bg-teal-600 text-white font-medium whitespace-nowrap';
                 } else {
                     view.classList.add('hidden');
-                    if (tabBtn) tabBtn.className = 'px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition';
-                    if (mobTabBtn) mobTabBtn.className = 'px-2.5 py-1 rounded text-slate-600 whitespace-nowrap';
+                    if (tabBtn) tabBtn.className = 'px-3.5 py-1.5 rounded-lg text-[#9aa2b2] hover:text-[#e6e9f0] transition';
+                    if (mobTabBtn) mobTabBtn.className = 'px-2.5 py-1 rounded text-[#9aa2b2] whitespace-nowrap';
                 }
             });
         }
@@ -559,16 +570,16 @@
             try {
                 const res = await fetch(`${API_BASE}/health`, { method: 'GET' });
                 if (res.ok) {
-                    dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
+                    dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
                     text.textContent = 'API Live (Port 8000)';
-                    text.className = 'text-[11px] font-mono font-medium text-emerald-700';
+                    text.className = 'text-[11px] font-mono font-medium text-emerald-400';
                 } else {
                     throw new Error('Offline');
                 }
             } catch (err) {
-                dot.className = 'w-2 h-2 rounded-full bg-rose-500';
+                dot.className = 'w-2 h-2 rounded-full bg-rose-400';
                 text.textContent = 'API Offline';
-                text.className = 'text-[11px] font-mono font-medium text-rose-600';
+                text.className = 'text-[11px] font-mono font-medium text-rose-400';
             }
         }
         updateHealth();
@@ -665,15 +676,15 @@
             const verdictBadge = document.getElementById('verdict-badge');
             
             if (isPhish) {
-                verdictTitle.textContent = 'Malicious Phishing Detected';
-                verdictTitle.className = 'text-xl font-extrabold text-rose-700 mt-0.5';
+                verdictTitle.textContent = 'Malicious Threat Detected';
+                verdictTitle.className = 'text-xl font-extrabold text-rose-400 mt-0.5';
                 verdictBadge.textContent = `${data.risk_level} Risk (${data.label})`;
-                verdictBadge.className = 'px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-200';
+                verdictBadge.className = 'px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider bg-rose-950/70 text-rose-300 border border-rose-800/60';
             } else {
                 verdictTitle.textContent = 'Authentic & Legitimate Email';
-                verdictTitle.className = 'text-xl font-extrabold text-emerald-700 mt-0.5';
+                verdictTitle.className = 'text-xl font-extrabold text-emerald-400 mt-0.5';
                 verdictBadge.textContent = `${data.risk_level} Risk (Safe)`;
-                verdictBadge.className = 'px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200';
+                verdictBadge.className = 'px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider bg-emerald-950/70 text-emerald-300 border border-emerald-800/60';
             }
 
             // Radial Gauge Animation
@@ -683,19 +694,19 @@
             
             const offset = circumference - (pct / 100) * circumference;
             circle.style.strokeDashoffset = offset;
-            circle.style.stroke = isPhish ? (pct > 75 ? '#e11d48' : '#d97706') : '#059669';
+            circle.style.stroke = isPhish ? (pct > 75 ? '#f87171' : '#fbbf24') : '#34d399';
             gaugeVal.textContent = `${pct}%`;
-            gaugeVal.className = `text-2xl font-extrabold font-mono ${isPhish ? 'text-rose-700' : 'text-emerald-700'}`;
+            gaugeVal.className = `text-2xl font-extrabold font-mono ${isPhish ? 'text-rose-400' : 'text-emerald-400'}`;
 
             // Sender & Indicator summary
             const sender = data.sender_analysis || {};
             const senderTrustEl = document.getElementById('summary-sender-trust');
             if (sender.is_trusted) {
                 senderTrustEl.textContent = 'Verified Brand';
-                senderTrustEl.className = 'font-semibold font-mono text-emerald-700';
+                senderTrustEl.className = 'font-semibold font-mono text-emerald-400';
             } else {
                 senderTrustEl.textContent = `@${sender.domain || 'untrusted'}`;
-                senderTrustEl.className = 'font-semibold font-mono text-slate-700';
+                senderTrustEl.className = 'font-semibold font-mono text-[#e6e9f0]';
             }
 
             const linkCount = (data.urls_inspected || []).length;
@@ -704,18 +715,18 @@
             const typoEl = document.getElementById('summary-typo');
             if (sender.typosquatting_detected) {
                 typoEl.textContent = `Impersonating ${sender.impersonated_brand}`;
-                typoEl.className = 'font-semibold font-mono text-rose-700';
+                typoEl.className = 'font-semibold font-mono text-rose-400';
             } else {
                 typoEl.textContent = 'None detected';
-                typoEl.className = 'font-semibold font-mono text-slate-500';
+                typoEl.className = 'font-semibold font-mono text-[#9aa2b2]';
             }
 
             // Security Findings List
             const findingsList = document.getElementById('findings-list');
             document.getElementById('findings-count').textContent = `${data.reasons.length} factor(s)`;
             findingsList.innerHTML = data.reasons.map(r => `
-                <li class="flex items-start gap-2 text-slate-700 text-xs leading-relaxed p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
-                    <span class="${isPhish ? 'text-rose-600' : 'text-emerald-600'} font-bold mt-0.5">&bull;</span>
+                <li class="flex items-start gap-2 text-[#c5cbd6] text-xs leading-relaxed p-2.5 rounded-xl bg-[#191c24] border border-[#363d4d]">
+                    <span class="${isPhish ? 'text-rose-400' : 'text-emerald-400'} font-bold mt-0.5">&bull;</span>
                     <span>${r}</span>
                 </li>
             `).join('');
@@ -726,12 +737,12 @@
             if (data.urls_inspected && data.urls_inspected.length > 0) {
                 urlContainer.classList.remove('hidden');
                 urlList.innerHTML = data.urls_inspected.map(u => `
-                    <div class="p-3 bg-slate-50 rounded-xl border ${u.risk_score > 30 ? 'border-rose-200' : 'border-slate-200'} text-xs space-y-1.5">
+                    <div class="p-3 bg-[#191c24] rounded-xl border ${u.risk_score > 30 ? 'border-rose-500/40' : 'border-[#363d4d]'} text-xs space-y-1.5">
                         <div class="flex items-center justify-between">
-                            <span class="font-mono text-slate-800 truncate max-w-xs">${u.url}</span>
-                            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold ${u.risk_score > 30 ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800'}">Risk ${u.risk_score}%</span>
+                            <span class="font-mono text-[#e6e9f0] truncate max-w-xs">${u.url}</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold ${u.risk_score > 30 ? 'bg-rose-950/70 text-rose-300' : 'bg-emerald-950/70 text-emerald-300'}">Risk ${u.risk_score}%</span>
                         </div>
-                        ${u.issues.length ? `<div class="text-rose-700 text-[11px]">${u.issues.join(' &bull; ')}</div>` : '<div class="text-emerald-700 text-[11px]">No malicious link signatures detected</div>'}
+                        ${u.issues.length ? `<div class="text-rose-300 text-[11px]">${u.issues.join(' &bull; ')}</div>` : '<div class="text-emerald-300 text-[11px]">No malicious link signatures detected</div>'}
                     </div>
                 `).join('');
             } else {
@@ -757,7 +768,7 @@
             if (!url) return;
             const box = document.getElementById('inspector-url-result');
             box.classList.remove('hidden');
-            box.innerHTML = '<span class="text-xs text-slate-500 font-mono">Inspecting URL structure...</span>';
+            box.innerHTML = '<span class="text-xs text-[#9aa2b2] font-mono">Inspecting URL structure...</span>';
             try {
                 const res = await fetch(`${API_BASE}/analyze/url`, {
                     method: 'POST',
@@ -766,16 +777,16 @@
                 });
                 const d = await res.json();
                 box.innerHTML = `
-                    <div class="p-3 bg-white rounded-xl border ${d.risk_score > 30 ? 'border-rose-200' : 'border-slate-200'} text-xs space-y-1 shadow-xs">
+                    <div class="p-3 bg-[#262b36] rounded-xl border ${d.risk_score > 30 ? 'border-rose-500/50' : 'border-[#363d4d]'} text-xs space-y-1">
                         <div class="flex justify-between font-bold">
                             <span>Threat Score: ${d.risk_score}%</span>
-                            <span class="${d.risk_score > 30 ? 'text-rose-700' : 'text-emerald-700'}">${d.risk_score > 30 ? 'High Risk' : 'Low Risk'}</span>
+                            <span class="${d.risk_score > 30 ? 'text-rose-400' : 'text-emerald-400'}">${d.risk_score > 30 ? 'High Risk' : 'Low Risk'}</span>
                         </div>
-                        <div class="text-slate-600 mt-1">${d.issues.length ? d.issues.map(i => `&bull; ${i}`).join('<br>') : 'Clean URL structure.'}</div>
+                        <div class="text-[#9aa2b2] mt-1">${d.issues.length ? d.issues.map(i => `&bull; ${i}`).join('<br>') : 'Clean URL structure.'}</div>
                     </div>
                 `;
             } catch (e) {
-                box.innerHTML = `<span class="text-xs text-rose-600">Error: ${e.message}</span>`;
+                box.innerHTML = `<span class="text-xs text-rose-400">Error: ${e.message}</span>`;
             }
         }
 
@@ -784,7 +795,7 @@
             if (!domain_or_email) return;
             const box = document.getElementById('inspector-domain-result');
             box.classList.remove('hidden');
-            box.innerHTML = '<span class="text-xs text-slate-500 font-mono">Checking domain reputation...</span>';
+            box.innerHTML = '<span class="text-xs text-[#9aa2b2] font-mono">Checking domain reputation...</span>';
             try {
                 const res = await fetch(`${API_BASE}/analyze/domain`, {
                     method: 'POST',
@@ -793,19 +804,19 @@
                 });
                 const d = await res.json();
                 box.innerHTML = `
-                    <div class="p-3 bg-white rounded-xl border ${d.is_trusted ? 'border-emerald-200' : (d.typosquatting_detected ? 'border-rose-200' : 'border-slate-200')} text-xs space-y-1 shadow-xs">
+                    <div class="p-3 bg-[#262b36] rounded-xl border ${d.is_trusted ? 'border-emerald-500/50' : (d.typosquatting_detected ? 'border-rose-500/50' : 'border-[#363d4d]')} text-xs space-y-1">
                         <div class="flex justify-between font-bold">
                             <span>Domain: @${d.domain}</span>
-                            <span class="${d.is_trusted ? 'text-emerald-700' : (d.typosquatting_detected ? 'text-rose-700' : 'text-amber-700')}">${d.risk_level} Risk</span>
+                            <span class="${d.is_trusted ? 'text-emerald-400' : (d.typosquatting_detected ? 'text-rose-400' : 'text-amber-400')}">${d.risk_level} Risk</span>
                         </div>
-                        <div class="text-slate-600 text-[11px] mt-1">
+                        <div class="text-[#9aa2b2] text-[11px] mt-1">
                             Verified Brand: ${d.is_trusted ? 'Yes' : 'No'} &bull; Domain Entropy: ${d.entropy}<br>
                             ${d.typosquatting_detected ? `🚨 Typosquatting: Impersonating ${d.impersonated_brand}` : 'No brand typosquatting flags.'}
                         </div>
                     </div>
                 `;
             } catch (e) {
-                box.innerHTML = `<span class="text-xs text-rose-600">Error: ${e.message}</span>`;
+                box.innerHTML = `<span class="text-xs text-rose-400">Error: ${e.message}</span>`;
             }
         }
 
@@ -823,7 +834,7 @@
             if (!raw) return;
             const resBox = document.getElementById('batch-results-container');
             resBox.classList.remove('hidden');
-            resBox.innerHTML = '<span class="text-xs text-slate-500 font-mono">Running bulk analysis...</span>';
+            resBox.innerHTML = '<span class="text-xs text-[#9aa2b2] font-mono">Running bulk analysis...</span>';
             try {
                 const emails = JSON.parse(raw);
                 const res = await fetch(`${API_BASE}/predict/batch`, {
@@ -833,9 +844,9 @@
                 });
                 const list = await res.json();
                 resBox.innerHTML = `
-                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <div class="overflow-x-auto rounded-xl border border-[#363d4d]">
                         <table class="w-full text-left text-xs">
-                            <thead class="bg-slate-50 text-slate-600 uppercase font-semibold text-[10px]">
+                            <thead class="bg-[#191c24] text-[#9aa2b2] uppercase font-semibold text-[10px]">
                                 <tr>
                                     <th class="p-3">#</th>
                                     <th class="p-3">Verdict</th>
@@ -844,14 +855,14 @@
                                     <th class="p-3">Primary Diagnostic</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-200 bg-white font-mono">
+                            <tbody class="divide-y divide-[#363d4d] bg-[#262b36] font-mono">
                                 ${list.map((r, i) => `
                                     <tr>
-                                        <td class="p-3 text-slate-400">${i+1}</td>
-                                        <td class="p-3 font-bold ${r.label === 'Phishing' ? 'text-rose-700' : 'text-emerald-700'}">${r.label}</td>
-                                        <td class="p-3 text-slate-800">${(r.probability*100).toFixed(1)}%</td>
-                                        <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold ${r.risk_level === 'High' ? 'bg-rose-100 text-rose-800' : (r.risk_level === 'Medium' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800')}">${r.risk_level}</span></td>
-                                        <td class="p-3 font-sans text-slate-700 truncate max-w-xs">${r.reasons[0] || 'Clean'}</td>
+                                        <td class="p-3 text-[#6e7687]">${i+1}</td>
+                                        <td class="p-3 font-bold ${r.label === 'Phishing' ? 'text-rose-400' : 'text-emerald-400'}">${r.label}</td>
+                                        <td class="p-3 text-[#e6e9f0]">${(r.probability*100).toFixed(1)}%</td>
+                                        <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold ${r.risk_level === 'High' ? 'bg-rose-950/70 text-rose-300' : (r.risk_level === 'Medium' ? 'bg-amber-950/70 text-amber-300' : 'bg-emerald-950/70 text-emerald-300')}">${r.risk_level}</span></td>
+                                        <td class="p-3 font-sans text-[#c5cbd6] truncate max-w-xs">${r.reasons[0] || 'Clean'}</td>
                                     </tr>
                                 `).join('')}
                             </tbody>
@@ -859,7 +870,7 @@
                     </div>
                 `;
             } catch (e) {
-                resBox.innerHTML = `<span class="text-xs text-rose-600">Batch Error: ${e.message}</span>`;
+                resBox.innerHTML = `<span class="text-xs text-rose-400">Batch Error: ${e.message}</span>`;
             }
         }
     </script>
