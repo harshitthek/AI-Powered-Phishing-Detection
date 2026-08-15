@@ -20,18 +20,19 @@
                             900: '#78350f',
                             950: '#451a03',
                         },
-                        zinc: {
-                            950: '#0e0e10',
-                            900: '#141417',
-                            850: '#1a1a1e',
-                            800: '#222227',
-                            700: '#303038',
-                            600: '#42424d',
-                            500: '#71717a',
-                            400: '#a1a1aa',
-                            300: '#d4d4d8',
-                            200: '#e4e4e7',
-                            100: '#f4f4f5'
+                        graphite: {
+                            950: '#0d0e11',
+                            900: '#131418',
+                            850: '#18191f',
+                            800: '#1f2027',
+                            750: '#272932',
+                            700: '#323440',
+                            600: '#454756',
+                            500: '#73768c',
+                            400: '#9fa2b4',
+                            300: '#cfd2df',
+                            200: '#e5e7f0',
+                            100: '#f4f5fa'
                         }
                     },
                     fontFamily: {
@@ -50,45 +51,55 @@
 
     <style>
         /* =========================================================
-           WARM CHARCOAL & AMBER GOLD THEME (STRICTLY NO BLUE)
+           TACTILE GRAPHITE & WARM AMBER (ELIMINATING STALE BLACK BOXES)
            ========================================================= */
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0e0e10;
-            color: #f4f4f5;
+            background: #0f1013 radial-gradient(circle at 50% 0%, #1a1b22 0%, #0f1013 75%);
+            color: #f4f5fa;
+            min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* Sleek warm scrollbars */
+        /* Subtle smooth scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #141417; }
-        ::-webkit-scrollbar-thumb { background: #303038; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #42424d; }
+        ::-webkit-scrollbar-track { background: #131418; }
+        ::-webkit-scrollbar-thumb { background: #323440; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #454756; }
 
-        .panel-surface {
-            background-color: #1a1a1e;
-            border: 1px solid #303038;
+        /* Tactile depth panels (layered gradients + inner top bevel) */
+        .tactile-card {
+            background: linear-gradient(155deg, #1c1d24 0%, #15161c 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 14px 38px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.09);
         }
 
-        .panel-surface-elevated {
-            background-color: #222227;
-            border: 1px solid #303038;
+        .tactile-card-elevated {
+            background: linear-gradient(155deg, #242630 0%, #1a1b22 100%);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        /* Subtle amber ambient glow (No blue) */
+        .tactile-card-recessed {
+            background: #111216;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Ambient soft gold glow */
         .ambient-glow {
             position: fixed;
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 900px;
-            height: 380px;
-            background: radial-gradient(circle, rgba(245, 158, 11, 0.05) 0%, rgba(217, 119, 6, 0.02) 45%, transparent 70%);
+            width: 1000px;
+            height: 420px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.06) 0%, rgba(217, 119, 6, 0.02) 45%, transparent 70%);
             pointer-events: none;
             z-index: 0;
         }
 
-        /* Circular radial gauge */
+        /* Gauge meter stroke animation */
         .gauge-meter {
             transition: stroke-dashoffset 0.85s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.4s ease;
             transform: rotate(-90deg);
@@ -96,7 +107,7 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-enter { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -108,9 +119,9 @@
     <div class="ambient-glow"></div>
 
     <!-- Top Navigation Header -->
-    <header class="sticky top-0 z-40 bg-[#0e0e10]/90 backdrop-blur-md border-b border-zinc-700/80 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+    <header class="sticky top-0 z-40 bg-[#111216]/90 backdrop-blur-md border-b border-white/[0.08] px-4 sm:px-8 py-3.5 flex items-center justify-between shadow-md">
         <div class="flex items-center space-x-3.5">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-zinc-950 font-bold shadow-md shadow-amber-500/10">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-zinc-950 font-bold shadow-lg shadow-amber-500/15">
                 <svg class="w-5 h-5 text-zinc-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
@@ -118,58 +129,58 @@
             <div>
                 <div class="flex items-center gap-2">
                     <span class="text-base font-extrabold tracking-tight text-white">PhishShield AI</span>
-                    <span class="text-[10px] font-mono font-bold bg-amber-950 text-amber-300 border border-amber-800/60 px-1.5 py-0.2 rounded">v2.1</span>
+                    <span class="text-[10px] font-mono font-bold bg-amber-950/80 text-amber-300 border border-amber-800/60 px-1.5 py-0.2 rounded">v2.1</span>
                 </div>
-                <p class="text-[11px] text-zinc-400 font-normal">Dual-Engine Phishing & Impersonation Defense</p>
+                <p class="text-[11px] text-graphite-400 font-normal">Dual-Engine Phishing & Impersonation Defense</p>
             </div>
         </div>
 
         <!-- Mode Tabs -->
-        <nav class="hidden md:flex items-center bg-[#1a1a1e] border border-zinc-700/80 rounded-xl p-1 text-xs font-medium text-zinc-400">
-            <button onclick="switchTab('email')" id="nav-tab-email" class="px-3.5 py-1.5 rounded-lg bg-zinc-800 text-amber-400 font-semibold border border-zinc-700 shadow-xs transition flex items-center gap-1.5">
+        <nav class="hidden md:flex items-center bg-[#15161c] border border-white/[0.08] rounded-xl p-1 text-xs font-medium text-graphite-400 shadow-inner">
+            <button onclick="switchTab('email')" id="nav-tab-email" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500/15 to-amber-600/10 text-amber-400 font-semibold border border-amber-500/30 shadow-xs transition flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                 Email Threat Scanner
             </button>
             <button onclick="switchTab('link')" id="nav-tab-link" class="px-3.5 py-1.5 rounded-lg hover:text-white transition flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                <svg class="w-3.5 h-3.5 text-graphite-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
                 URL & Domain Inspector
             </button>
             <button onclick="switchTab('batch')" id="nav-tab-batch" class="px-3.5 py-1.5 rounded-lg hover:text-white transition flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                <svg class="w-3.5 h-3.5 text-graphite-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
                 Batch Scanner
             </button>
             <button onclick="switchTab('metrics')" id="nav-tab-metrics" class="px-3.5 py-1.5 rounded-lg hover:text-white transition flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <svg class="w-3.5 h-3.5 text-graphite-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                 ML Diagnostics
             </button>
         </nav>
 
         <!-- Live Server Status & Docs -->
         <div class="flex items-center space-x-3">
-            <a href="/docs" target="_blank" class="hidden sm:flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white bg-[#1a1a1e] border border-zinc-700 hover:border-zinc-500 px-3 py-1.5 rounded-lg transition">
+            <a href="/docs" target="_blank" class="hidden sm:flex items-center gap-1.5 text-xs text-graphite-300 hover:text-white bg-[#1a1b22] border border-white/[0.08] hover:border-white/[0.18] px-3 py-1.5 rounded-lg transition shadow-xs">
                 <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
                 <span>Swagger Docs</span>
             </a>
-            <div class="flex items-center space-x-2 bg-[#1a1a1e] border border-zinc-700 px-2.5 py-1.5 rounded-lg">
+            <div class="flex items-center space-x-2 bg-[#1a1b22] border border-white/[0.08] px-2.5 py-1.5 rounded-lg shadow-xs">
                 <span id="health-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span id="health-text" class="text-[11px] font-mono text-emerald-400 font-medium">Model Online</span>
             </div>
         </div>
     </header>
 
-    <!-- Metrics Ticker Bar (Charcoal & Warm Gold) -->
-    <div class="w-full bg-[#141417] border-b border-zinc-700/80 px-4 sm:px-8 py-2 overflow-x-auto">
-        <div class="max-w-7xl mx-auto flex items-center justify-between gap-6 text-[11px] font-mono text-zinc-400 whitespace-nowrap">
+    <!-- Metrics Ticker Bar -->
+    <div class="w-full bg-[#131418]/90 border-b border-white/[0.06] px-4 sm:px-8 py-2 overflow-x-auto">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-6 text-[11px] font-mono text-graphite-400 whitespace-nowrap">
             <div class="flex items-center gap-4">
                 <span>Classifier: <b class="text-white">Random Forest (250 Trees)</b></span>
-                <span class="text-zinc-600">&bull;</span>
+                <span class="text-graphite-600">&bull;</span>
                 <span>Holdout Accuracy: <b class="text-emerald-400">100.0%</b></span>
-                <span class="text-zinc-600">&bull;</span>
+                <span class="text-graphite-600">&bull;</span>
                 <span>5-Fold Stratified CV: <b class="text-amber-400">94.29%</b></span>
-                <span class="text-zinc-600">&bull;</span>
+                <span class="text-graphite-600">&bull;</span>
                 <span>Signal Matrix: <b class="text-amber-300">15 Structural + 3,000 TF-IDF</b></span>
             </div>
-            <div class="hidden lg:flex items-center gap-2 text-zinc-500 text-[10px]">
+            <div class="hidden lg:flex items-center gap-2 text-graphite-500 text-[10px]">
                 <span>Entropy DGA &bull; Brand Typosquatting (50+ Brands)</span>
             </div>
         </div>
@@ -184,62 +195,62 @@
         <div id="tab-view-email" class="space-y-6 animate-enter">
 
             <!-- Presets Bar -->
-            <div class="panel-surface rounded-2xl p-4 sm:p-5 shadow-lg">
+            <div class="tactile-card rounded-2xl p-4 sm:p-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                    <span class="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="text-xs font-bold text-graphite-200 uppercase tracking-wider flex items-center gap-1.5">
                         <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                         Test Scenario Presets (1-Click Fill & Scan):
                     </span>
-                    <span class="text-[11px] text-zinc-400 font-mono">Real-world phishing vectors & verified workplace messages</span>
+                    <span class="text-[11px] text-graphite-400 font-mono">Real-world phishing vectors & verified workplace messages</span>
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-                    <button type="button" onclick="loadAndScanPreset('bank')" class="p-2.5 bg-[#141417] hover:bg-red-950/40 border border-zinc-700 hover:border-red-500/50 rounded-xl text-left transition group">
-                        <div class="flex items-center justify-between text-xs font-semibold text-white group-hover:text-red-300">
+                    <button type="button" onclick="loadAndScanPreset('bank')" class="p-2.5 bg-[#17181e] hover:bg-rose-950/40 border border-white/[0.06] hover:border-rose-500/40 rounded-xl text-left transition group shadow-xs">
+                        <div class="flex items-center justify-between text-xs font-semibold text-white group-hover:text-rose-300">
                             <span>PayPal Spoof</span>
-                            <span class="text-[10px] text-red-300 bg-red-950 border border-red-800/60 px-1.5 py-0.2 rounded font-mono">Phish</span>
+                            <span class="text-[10px] text-rose-300 bg-rose-950/80 border border-rose-800/60 px-1.5 py-0.2 rounded font-mono">Phish</span>
                         </div>
-                        <p class="text-[10px] text-zinc-400 truncate mt-0.5">Account locked alert</p>
+                        <p class="text-[10px] text-graphite-400 truncate mt-0.5">Account locked alert</p>
                     </button>
 
-                    <button type="button" onclick="loadAndScanPreset('giftcard')" class="p-2.5 bg-[#141417] hover:bg-amber-950/40 border border-zinc-700 hover:border-amber-500/50 rounded-xl text-left transition group">
+                    <button type="button" onclick="loadAndScanPreset('giftcard')" class="p-2.5 bg-[#17181e] hover:bg-amber-950/40 border border-white/[0.06] hover:border-amber-500/40 rounded-xl text-left transition group shadow-xs">
                         <div class="flex items-center justify-between text-xs font-semibold text-white group-hover:text-amber-300">
                             <span>Amazon Voucher</span>
-                            <span class="text-[10px] text-amber-300 bg-amber-950 border border-amber-800/60 px-1.5 py-0.2 rounded font-mono">Scam</span>
+                            <span class="text-[10px] text-amber-300 bg-amber-950/80 border border-amber-800/60 px-1.5 py-0.2 rounded font-mono">Scam</span>
                         </div>
-                        <p class="text-[10px] text-zinc-400 truncate mt-0.5">$1,000 gift card</p>
+                        <p class="text-[10px] text-graphite-400 truncate mt-0.5">$1,000 gift card</p>
                     </button>
 
-                    <button type="button" onclick="loadAndScanPreset('bec_ceo')" class="p-2.5 bg-[#141417] hover:bg-red-950/40 border border-zinc-700 hover:border-red-500/50 rounded-xl text-left transition group">
-                        <div class="flex items-center justify-between text-xs font-semibold text-white group-hover:text-red-300">
+                    <button type="button" onclick="loadAndScanPreset('bec_ceo')" class="p-2.5 bg-[#17181e] hover:bg-rose-950/40 border border-white/[0.06] hover:border-rose-500/40 rounded-xl text-left transition group shadow-xs">
+                        <div class="flex items-center justify-between text-xs font-semibold text-white group-hover:text-rose-300">
                             <span>CEO Wire Fraud</span>
-                            <span class="text-[10px] text-red-300 bg-red-950 border border-red-800/60 px-1.5 py-0.2 rounded font-mono">BEC</span>
+                            <span class="text-[10px] text-rose-300 bg-rose-950/80 border border-rose-800/60 px-1.5 py-0.2 rounded font-mono">BEC</span>
                         </div>
-                        <p class="text-[10px] text-zinc-400 truncate mt-0.5">Urgent wire transfer</p>
+                        <p class="text-[10px] text-graphite-400 truncate mt-0.5">Urgent wire transfer</p>
                     </button>
 
-                    <button type="button" onclick="loadAndScanPreset('crypto')" class="p-2.5 bg-[#141417] hover:bg-purple-950/40 border border-zinc-700 hover:border-purple-500/50 rounded-xl text-left transition group">
+                    <button type="button" onclick="loadAndScanPreset('crypto')" class="p-2.5 bg-[#17181e] hover:bg-purple-950/40 border border-white/[0.06] hover:border-purple-500/40 rounded-xl text-left transition group shadow-xs">
                         <div class="flex items-center justify-between text-xs font-semibold text-white group-hover:text-purple-300">
                             <span>Binance Airdrop</span>
-                            <span class="text-[10px] text-purple-300 bg-purple-950 border border-purple-800/60 px-1.5 py-0.2 rounded font-mono">Web3</span>
+                            <span class="text-[10px] text-purple-300 bg-purple-950/80 border border-purple-800/60 px-1.5 py-0.2 rounded font-mono">Web3</span>
                         </div>
-                        <p class="text-[10px] text-zinc-400 truncate mt-0.5">2.0 ETH airdrop</p>
+                        <p class="text-[10px] text-graphite-400 truncate mt-0.5">2.0 ETH airdrop</p>
                     </button>
 
-                    <button type="button" onclick="loadAndScanPreset('work')" class="p-2.5 bg-[#141417] hover:bg-emerald-950/40 border border-zinc-700 hover:border-emerald-500/50 rounded-xl text-left transition group">
+                    <button type="button" onclick="loadAndScanPreset('work')" class="p-2.5 bg-[#17181e] hover:bg-emerald-950/40 border border-white/[0.06] hover:border-emerald-500/40 rounded-xl text-left transition group shadow-xs">
                         <div class="flex items-center justify-between text-xs font-semibold text-white group-hover:text-emerald-300">
                             <span>Google Sync</span>
-                            <span class="text-[10px] text-emerald-300 bg-emerald-950 border border-emerald-800/60 px-1.5 py-0.2 rounded font-mono">Safe</span>
+                            <span class="text-[10px] text-emerald-300 bg-emerald-950/80 border border-emerald-800/60 px-1.5 py-0.2 rounded font-mono">Safe</span>
                         </div>
-                        <p class="text-[10px] text-zinc-400 truncate mt-0.5">Sprint planning sync</p>
+                        <p class="text-[10px] text-graphite-400 truncate mt-0.5">Sprint planning sync</p>
                     </button>
 
-                    <button type="button" onclick="loadAndScanPreset('delivery')" class="p-2.5 bg-[#141417] hover:bg-emerald-950/40 border border-zinc-700 hover:border-emerald-500/50 rounded-xl text-left transition group">
+                    <button type="button" onclick="loadAndScanPreset('delivery')" class="p-2.5 bg-[#17181e] hover:bg-emerald-950/40 border border-white/[0.06] hover:border-emerald-500/40 rounded-xl text-left transition group shadow-xs">
                         <div class="flex items-center justify-between text-xs font-semibold text-white group-hover:text-emerald-300">
                             <span>Amazon Order</span>
-                            <span class="text-[10px] text-emerald-300 bg-emerald-950 border border-emerald-800/60 px-1.5 py-0.2 rounded font-mono">Safe</span>
+                            <span class="text-[10px] text-emerald-300 bg-emerald-950/80 border border-emerald-800/60 px-1.5 py-0.2 rounded font-mono">Safe</span>
                         </div>
-                        <p class="text-[10px] text-zinc-400 truncate mt-0.5">Tracking update slip</p>
+                        <p class="text-[10px] text-graphite-400 truncate mt-0.5">Tracking update slip</p>
                     </button>
                 </div>
             </div>
@@ -249,13 +260,13 @@
 
                 <!-- Left Column: Input Form (7 Cols) -->
                 <div class="lg:col-span-7 space-y-4">
-                    <div class="panel-surface rounded-2xl p-5 sm:p-7 shadow-xl space-y-4">
-                        <div class="flex items-center justify-between pb-3 border-b border-zinc-700/80">
-                            <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-300 flex items-center gap-2">
+                    <div class="tactile-card rounded-2xl p-5 sm:p-7 space-y-4">
+                        <div class="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-graphite-200 flex items-center gap-2">
                                 <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                 Email Payload Details
                             </h2>
-                            <button type="button" onclick="clearScannerForm()" class="text-xs text-zinc-400 hover:text-white px-2.5 py-1 rounded-lg bg-[#141417] hover:bg-zinc-700 border border-zinc-700 transition">
+                            <button type="button" onclick="clearScannerForm()" class="text-xs text-graphite-400 hover:text-white px-2.5 py-1 rounded-lg bg-[#14151a] hover:bg-zinc-700 border border-white/[0.08] transition">
                                 Reset Fields
                             </button>
                         </div>
@@ -264,49 +275,49 @@
                             <!-- Sender & Subject -->
                             <div class="space-y-3.5">
                                 <div>
-                                    <label class="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-1.5">
+                                    <label class="block text-xs font-semibold text-graphite-300 uppercase tracking-wider mb-1.5">
                                         Sender Address
                                     </label>
                                     <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-500">
+                                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-graphite-500">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/></svg>
                                         </div>
                                         <input type="email" id="input-sender" placeholder="security-alert@paypal-update-center.net" required
-                                               class="w-full bg-[#141417] border border-zinc-700 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 font-mono focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition">
+                                               class="w-full tactile-card-recessed rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-white placeholder-graphite-500 font-mono focus:outline-none focus:ring-2 focus:ring-amber-500/60 focus:border-transparent transition">
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label class="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-1.5">
+                                    <label class="block text-xs font-semibold text-graphite-300 uppercase tracking-wider mb-1.5">
                                         Subject Header
                                     </label>
                                     <input type="text" id="input-subject" placeholder="URGENT: Your PayPal Account Has Been Suspended" required
-                                           class="w-full bg-[#141417] border border-zinc-700 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition">
+                                           class="w-full tactile-card-recessed rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder-graphite-500 focus:outline-none focus:ring-2 focus:ring-amber-500/60 focus:border-transparent transition">
                                 </div>
                             </div>
 
                             <!-- Body Text -->
                             <div>
                                 <div class="flex items-center justify-between mb-1.5">
-                                    <label class="block text-xs font-semibold text-zinc-300 uppercase tracking-wider">
+                                    <label class="block text-xs font-semibold text-graphite-300 uppercase tracking-wider">
                                         Email Message Body
                                     </label>
-                                    <span id="char-counter" class="text-[11px] font-mono text-zinc-500">0 characters</span>
+                                    <span id="char-counter" class="text-[11px] font-mono text-graphite-500">0 characters</span>
                                 </div>
                                 <textarea id="input-body" rows="6" placeholder="Paste full email message body with links and text..." required
-                                          class="w-full bg-[#141417] border border-zinc-700 rounded-xl p-4 text-xs sm:text-sm text-zinc-200 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-y font-sans leading-relaxed"></textarea>
+                                          class="w-full tactile-card-recessed rounded-xl p-4 text-xs sm:text-sm text-graphite-200 placeholder-graphite-500 focus:outline-none focus:ring-2 focus:ring-amber-500/60 focus:border-transparent resize-y font-sans leading-relaxed"></textarea>
                             </div>
 
                             <!-- Sensitivity Slider -->
-                            <div class="panel-surface-elevated rounded-xl p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <div class="tactile-card-elevated rounded-xl p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
                                 <div>
-                                    <div class="text-xs font-semibold text-zinc-200">ML Decision Threshold:</div>
-                                    <p class="text-[11px] text-zinc-400">Probability boundary for threat classification (Default: 0.50)</p>
+                                    <div class="text-xs font-semibold text-graphite-200">ML Decision Threshold:</div>
+                                    <p class="text-[11px] text-graphite-400">Probability boundary for threat classification (Default: 0.50)</p>
                                 </div>
                                 <div class="flex items-center space-x-3 w-full sm:w-auto">
                                     <input type="range" id="input-threshold" min="0.1" max="0.9" step="0.05" value="0.5"
                                            class="w-full sm:w-32 accent-amber-500 cursor-pointer">
-                                    <span id="label-threshold" class="text-xs font-mono font-bold bg-[#141417] text-amber-400 px-2 py-0.5 rounded border border-zinc-700">0.50</span>
+                                    <span id="label-threshold" class="text-xs font-mono font-bold bg-[#111216] text-amber-400 px-2 py-0.5 rounded border border-white/[0.08]">0.50</span>
                                 </div>
                             </div>
 
@@ -324,13 +335,13 @@
                 <div class="lg:col-span-5 space-y-4">
                     
                     <!-- Awaiting State -->
-                    <div id="result-empty-state" class="panel-surface rounded-2xl p-8 text-center space-y-4 flex flex-col items-center justify-center min-h-[440px]">
-                        <div class="w-16 h-16 rounded-2xl bg-[#141417] border border-zinc-700 flex items-center justify-center text-amber-400/60 shadow-inner">
+                    <div id="result-empty-state" class="tactile-card rounded-2xl p-8 text-center space-y-4 flex flex-col items-center justify-center min-h-[440px]">
+                        <div class="w-16 h-16 rounded-2xl bg-[#14151a] border border-white/[0.08] flex items-center justify-center text-amber-400/60 shadow-inner">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         </div>
                         <div class="space-y-1 max-w-xs">
                             <h3 class="text-sm font-bold text-white">Awaiting Security Payload</h3>
-                            <p class="text-xs text-zinc-400 leading-relaxed">Choose a preset scenario above or enter an email to trigger real-time ML inference, brand typosquatting detection, and URL heuristics.</p>
+                            <p class="text-xs text-graphite-400 leading-relaxed">Choose a preset scenario above or enter an email to trigger real-time ML inference, brand typosquatting detection, and URL heuristics.</p>
                         </div>
                     </div>
 
@@ -338,11 +349,11 @@
                     <div id="result-active-state" class="hidden space-y-4 animate-enter">
 
                         <!-- Main Verdict Card -->
-                        <div id="verdict-banner-card" class="panel-surface rounded-2xl p-6 shadow-xl space-y-5 border">
+                        <div id="verdict-banner-card" class="tactile-card rounded-2xl p-6 space-y-5 border">
                             
-                            <div class="flex items-center justify-between pb-3 border-b border-zinc-700/80">
+                            <div class="flex items-center justify-between pb-3 border-b border-white/[0.08]">
                                 <div>
-                                    <span class="text-[10px] uppercase tracking-widest text-zinc-400 font-bold block">Engine Verdict</span>
+                                    <span class="text-[10px] uppercase tracking-widest text-graphite-400 font-bold block">Engine Verdict</span>
                                     <h3 id="verdict-title-text" class="text-xl font-extrabold text-white mt-0.5">Evaluating...</h3>
                                 </div>
                                 <span id="verdict-tier-badge" class="px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider">
@@ -355,27 +366,27 @@
                                 <!-- Radial Dial -->
                                 <div class="relative w-28 h-28 flex items-center justify-center flex-shrink-0">
                                     <svg class="w-28 h-28" viewBox="0 0 100 100">
-                                        <circle cx="50" cy="50" r="40" stroke="#303038" stroke-width="8" fill="transparent" />
+                                        <circle cx="50" cy="50" r="40" stroke="#2a2c38" stroke-width="8" fill="transparent" />
                                         <circle id="radial-progress-circle" class="gauge-meter" cx="50" cy="50" r="40" stroke="#ef4444" stroke-width="8" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" fill="transparent" />
                                     </svg>
                                     <div class="absolute flex flex-col items-center justify-center text-center">
                                         <span id="radial-score-pct" class="text-2xl font-extrabold font-mono text-white">0%</span>
-                                        <span class="text-[9px] uppercase font-bold text-zinc-400 tracking-wider">Threat Score</span>
+                                        <span class="text-[9px] uppercase font-bold text-graphite-400 tracking-wider">Threat Score</span>
                                     </div>
                                 </div>
 
                                 <!-- Key Indicators -->
                                 <div class="flex-1 w-full space-y-2 text-xs">
-                                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#141417] border border-zinc-700">
-                                        <span class="text-zinc-400">Sender Domain:</span>
+                                    <div class="flex items-center justify-between p-2.5 rounded-xl tactile-card-recessed">
+                                        <span class="text-graphite-400">Sender Domain:</span>
                                         <span id="metric-sender-domain" class="font-semibold font-mono text-white">--</span>
                                     </div>
-                                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#141417] border border-zinc-700">
-                                        <span class="text-zinc-400">Brand Spoofing:</span>
+                                    <div class="flex items-center justify-between p-2.5 rounded-xl tactile-card-recessed">
+                                        <span class="text-graphite-400">Brand Spoofing:</span>
                                         <span id="metric-typo-flag" class="font-semibold font-mono text-white">None</span>
                                     </div>
-                                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#141417] border border-zinc-700">
-                                        <span class="text-zinc-400">Embedded Links:</span>
+                                    <div class="flex items-center justify-between p-2.5 rounded-xl tactile-card-recessed">
+                                        <span class="text-graphite-400">Embedded Links:</span>
                                         <span id="metric-url-count" class="font-semibold font-mono text-white">0 links</span>
                                     </div>
                                 </div>
@@ -383,27 +394,27 @@
                         </div>
 
                         <!-- Forensic Explainability Reasons -->
-                        <div class="panel-surface rounded-2xl p-5 sm:p-6 space-y-3 shadow-lg">
-                            <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-300 flex items-center justify-between">
+                        <div class="tactile-card rounded-2xl p-5 sm:p-6 space-y-3">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-graphite-200 flex items-center justify-between">
                                 <span>Key Forensic Findings</span>
-                                <span id="reasons-count-badge" class="text-[10px] font-mono text-zinc-500">0 factors</span>
+                                <span id="reasons-count-badge" class="text-[10px] font-mono text-graphite-500">0 factors</span>
                             </h4>
                             <ul id="reasons-items-list" class="space-y-2"></ul>
                         </div>
 
                         <!-- Detected URLs List -->
-                        <div id="detected-urls-panel" class="hidden panel-surface rounded-2xl p-5 sm:p-6 space-y-3 shadow-lg">
-                            <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-300">Hyperlink Threat Inspection</h4>
+                        <div id="detected-urls-panel" class="hidden tactile-card rounded-2xl p-5 sm:p-6 space-y-3">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-graphite-200">Hyperlink Threat Inspection</h4>
                             <div id="detected-urls-list" class="space-y-2.5"></div>
                         </div>
 
                         <!-- Action Toolbar -->
                         <div class="flex items-center gap-2">
-                            <button type="button" onclick="copyThreatIncidentReport()" class="flex-1 py-2.5 bg-[#141417] hover:bg-zinc-700 border border-zinc-700 rounded-xl text-xs font-semibold text-zinc-200 transition flex items-center justify-center gap-2">
+                            <button type="button" onclick="copyThreatIncidentReport()" class="flex-1 py-2.5 bg-[#17181e] hover:bg-zinc-700 border border-white/[0.08] rounded-xl text-xs font-semibold text-graphite-200 transition flex items-center justify-center gap-2">
                                 <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                                 <span>Copy SOC Incident Report</span>
                             </button>
-                            <button type="button" onclick="defangInputUrls()" class="py-2.5 px-4 bg-[#141417] hover:bg-zinc-700 border border-zinc-700 rounded-xl text-xs font-semibold text-amber-400 transition flex items-center gap-1.5">
+                            <button type="button" onclick="defangInputUrls()" class="py-2.5 px-4 bg-[#17181e] hover:bg-zinc-700 border border-white/[0.08] rounded-xl text-xs font-semibold text-amber-400 transition flex items-center gap-1.5">
                                 <span>🛡️ Defang</span>
                             </button>
                         </div>
@@ -419,20 +430,20 @@
         <!-- TAB 2: STANDALONE URL & DOMAIN INSPECTOR -->
         <!-- ============================================================= -->
         <div id="tab-view-link" class="hidden space-y-6 animate-enter">
-            <div class="panel-surface rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
+            <div class="tactile-card rounded-2xl p-6 sm:p-8 space-y-6">
                 <div>
                     <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                         <span>🔗</span> Standalone Hyperlink & Domain Authenticity Inspector
                     </h3>
-                    <p class="text-xs text-zinc-400 mt-1">Directly inspect isolated URLs or sender email domains for raw IP hosting, high-risk TLDs, and homoglyph typosquatting.</p>
+                    <p class="text-xs text-graphite-400 mt-1">Directly inspect isolated URLs or sender email domains for raw IP hosting, high-risk TLDs, and homoglyph typosquatting.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- URL Box -->
-                    <div class="panel-surface-elevated p-5 rounded-2xl space-y-3.5">
-                        <label class="block text-xs font-bold text-zinc-300 uppercase tracking-wider">Inspect URL Hyperlink</label>
+                    <div class="tactile-card-elevated p-5 rounded-2xl space-y-3.5">
+                        <label class="block text-xs font-bold text-graphite-200 uppercase tracking-wider">Inspect URL Hyperlink</label>
                         <input type="text" id="direct-url-input" placeholder="http://paypal-security-verification.xyz/login"
-                               class="w-full bg-[#141417] border border-zinc-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 font-mono focus:outline-none focus:ring-2 focus:ring-amber-500">
+                               class="w-full tactile-card-recessed rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-graphite-500 font-mono focus:outline-none focus:ring-2 focus:ring-amber-500/60">
                         <button type="button" onclick="inspectDirectUrl()" class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold rounded-xl text-xs transition shadow-sm">
                             Inspect URL Heuristics
                         </button>
@@ -440,10 +451,10 @@
                     </div>
 
                     <!-- Domain Box -->
-                    <div class="panel-surface-elevated p-5 rounded-2xl space-y-3.5">
-                        <label class="block text-xs font-bold text-zinc-300 uppercase tracking-wider">Inspect Domain / Email</label>
+                    <div class="tactile-card-elevated p-5 rounded-2xl space-y-3.5">
+                        <label class="block text-xs font-bold text-graphite-200 uppercase tracking-wider">Inspect Domain / Email</label>
                         <input type="text" id="direct-domain-input" placeholder="support@paypa1-update.com"
-                               class="w-full bg-[#141417] border border-zinc-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 font-mono focus:outline-none focus:ring-2 focus:ring-amber-500">
+                               class="w-full tactile-card-recessed rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-graphite-500 font-mono focus:outline-none focus:ring-2 focus:ring-amber-500/60">
                         <button type="button" onclick="inspectDirectDomain()" class="w-full py-2.5 bg-zinc-700 hover:bg-zinc-600 text-white font-bold rounded-xl text-xs transition shadow-sm">
                             Check Domain Reputation
                         </button>
@@ -458,15 +469,15 @@
         <!-- TAB 3: BATCH SECURITY SCANNER -->
         <!-- ============================================================= -->
         <div id="tab-view-batch" class="hidden space-y-6 animate-enter">
-            <div class="panel-surface rounded-2xl p-6 sm:p-8 space-y-5 shadow-xl">
+            <div class="tactile-card rounded-2xl p-6 sm:p-8 space-y-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                         <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                             <span>⚡</span> High-Speed Batch Security Scanner
                         </h3>
-                        <p class="text-xs text-zinc-400 mt-1">Submit multiple emails in JSON array format for bulk machine learning threat triage.</p>
+                        <p class="text-xs text-graphite-400 mt-1">Submit multiple emails in JSON array format for bulk machine learning threat triage.</p>
                     </div>
-                    <button type="button" onclick="populateBatchSampleJson()" class="text-xs bg-[#141417] hover:bg-zinc-700 text-amber-400 px-3 py-1.5 rounded-lg border border-zinc-700 transition font-medium">
+                    <button type="button" onclick="populateBatchSampleJson()" class="text-xs bg-[#17181e] hover:bg-zinc-700 text-amber-400 px-3 py-1.5 rounded-lg border border-white/[0.08] transition font-medium">
                         Load Sample Batch JSON
                     </button>
                 </div>
@@ -474,7 +485,7 @@
                 <textarea id="batch-input-area" rows="8" placeholder='[
   { "sender": "security-alert@paypal-update-center.net", "subject": "Account Locked", "email_text": "Verify at http://paypal-auth.xyz" },
   { "sender": "alex.chen@google.com", "subject": "Sprint planning sync", "email_text": "Notes from our morning sync attached." }
-]' class="w-full bg-[#141417] border border-zinc-700 rounded-xl p-4 text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+]' class="w-full tactile-card-recessed rounded-xl p-4 text-xs font-mono text-white placeholder-graphite-500 focus:outline-none focus:ring-2 focus:ring-amber-500/60"></textarea>
 
                 <button type="button" onclick="executeBatchScan()" id="btn-batch-execute" class="w-full py-3 bg-gradient-to-r from-amber-500 via-amber-600 to-amber-500 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-bold text-sm rounded-xl transition shadow-lg shadow-amber-950/40">
                     Run Bulk Batch Threat Scan
@@ -489,44 +500,44 @@
         <!-- TAB 4: ML MODEL BENCHMARKS -->
         <!-- ============================================================= -->
         <div id="tab-view-metrics" class="hidden space-y-6 animate-enter">
-            <div class="panel-surface rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
+            <div class="tactile-card rounded-2xl p-6 sm:p-8 space-y-6">
                 <div>
                     <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                         <span>📊</span> Machine Learning Model Specifications & Benchmarks
                     </h3>
-                    <p class="text-xs text-zinc-400 mt-1">Architecture parameters, feature extraction matrix, and cross-validation performance.</p>
+                    <p class="text-xs text-graphite-400 mt-1">Architecture parameters, feature extraction matrix, and cross-validation performance.</p>
                 </div>
 
                 <!-- Stats Cards -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div class="panel-surface-elevated p-5 rounded-2xl text-center space-y-1">
-                        <span class="text-xs uppercase font-bold text-zinc-400 tracking-wider">Holdout Test Accuracy</span>
+                    <div class="tactile-card-elevated p-5 rounded-2xl text-center space-y-1">
+                        <span class="text-xs uppercase font-bold text-graphite-400 tracking-wider">Holdout Test Accuracy</span>
                         <div class="text-3xl font-extrabold font-mono text-emerald-400">100.0%</div>
-                        <p class="text-[11px] text-zinc-500">25% Stratified Test Split</p>
+                        <p class="text-[11px] text-graphite-500">25% Stratified Test Split</p>
                     </div>
-                    <div class="panel-surface-elevated p-5 rounded-2xl text-center space-y-1">
-                        <span class="text-xs uppercase font-bold text-zinc-400 tracking-wider">5-Fold Stratified CV</span>
+                    <div class="tactile-card-elevated p-5 rounded-2xl text-center space-y-1">
+                        <span class="text-xs uppercase font-bold text-graphite-400 tracking-wider">5-Fold Stratified CV</span>
                         <div class="text-3xl font-extrabold font-mono text-amber-400">94.3%</div>
-                        <p class="text-[11px] text-zinc-500">Mean F1-Score: 93.3%</p>
+                        <p class="text-[11px] text-graphite-500">Mean F1-Score: 93.3%</p>
                     </div>
-                    <div class="panel-surface-elevated p-5 rounded-2xl text-center space-y-1">
-                        <span class="text-xs uppercase font-bold text-zinc-400 tracking-wider">Ensemble Trees</span>
-                        <div class="text-3xl font-extrabold font-mono text-zinc-200">250 Trees</div>
-                        <p class="text-[11px] text-zinc-500">Balanced Random Forest</p>
+                    <div class="tactile-card-elevated p-5 rounded-2xl text-center space-y-1">
+                        <span class="text-xs uppercase font-bold text-graphite-400 tracking-wider">Ensemble Trees</span>
+                        <div class="text-3xl font-extrabold font-mono text-graphite-200">250 Trees</div>
+                        <p class="text-[11px] text-graphite-500">Balanced Random Forest</p>
                     </div>
                 </div>
 
                 <!-- Pipeline Breakdown -->
-                <div class="panel-surface-elevated p-5 rounded-2xl space-y-4">
-                    <h4 class="text-xs font-bold text-zinc-300 uppercase tracking-wider">Dual-Engine Architecture Overview</h4>
+                <div class="tactile-card-elevated p-5 rounded-2xl space-y-4">
+                    <h4 class="text-xs font-bold text-graphite-200 uppercase tracking-wider">Dual-Engine Architecture Overview</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                        <div class="p-4 bg-[#141417] rounded-xl border border-zinc-700 space-y-1.5">
+                        <div class="p-4 tactile-card-recessed rounded-xl space-y-1.5">
                             <div class="font-bold text-amber-400">1. Sublinear TF-IDF N-grams</div>
-                            <p class="text-zinc-400">Unigrams and bigrams with sublinear term-frequency scaling and English stopword pruning up to 3,000 vocabulary dimensions.</p>
+                            <p class="text-graphite-400">Unigrams and bigrams with sublinear term-frequency scaling and English stopword pruning up to 3,000 vocabulary dimensions.</p>
                         </div>
-                        <div class="p-4 bg-[#141417] rounded-xl border border-zinc-700 space-y-1.5">
+                        <div class="p-4 tactile-card-recessed rounded-xl space-y-1.5">
                             <div class="font-bold text-amber-400">2. Heuristic Signal Matrix</div>
-                            <p class="text-zinc-400">15 structural signals: URL counts, raw IP hosting, high-risk TLDs, URL shorteners, domain entropy, typosquatting checks, and urgency densities.</p>
+                            <p class="text-graphite-400">15 structural signals: URL counts, raw IP hosting, high-risk TLDs, URL shorteners, domain entropy, typosquatting checks, and urgency densities.</p>
                         </div>
                     </div>
                 </div>
@@ -536,14 +547,14 @@
     </main>
 
     <!-- Global Toast -->
-    <div id="toast-bar" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-[#1a1a1e] border border-zinc-700 text-white text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2">
+    <div id="toast-bar" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-[#1a1b22] border border-white/[0.08] text-white text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2">
         <span id="toast-symbol">✅</span>
         <span id="toast-message">Notification message</span>
     </div>
 
     <!-- Footer -->
-    <footer class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-xs text-zinc-500 border-t border-zinc-700/80 z-10">
-        <p>PhishShield AI &bull; Production Machine Learning Phishing Defense Engine &bull; Developed by <span class="text-zinc-300 font-medium">harshitthek</span></p>
+    <footer class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-xs text-graphite-500 border-t border-white/[0.06] z-10">
+        <p>PhishShield AI &bull; Production Machine Learning Phishing Defense Engine &bull; Developed by <span class="text-graphite-300 font-medium">harshitthek</span></p>
     </footer>
 
     <!-- Interactive Controller Script -->
@@ -567,10 +578,10 @@
                 const btn = document.getElementById(`nav-tab-${t}`);
                 if (t === tabId) {
                     if (view) view.classList.remove('hidden');
-                    if (btn) btn.className = 'px-3.5 py-1.5 rounded-lg bg-zinc-800 text-amber-400 font-semibold border border-zinc-700 shadow-xs transition flex items-center gap-1.5';
+                    if (btn) btn.className = 'px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500/15 to-amber-600/10 text-amber-400 font-semibold border border-amber-500/30 shadow-xs transition flex items-center gap-1.5';
                 } else {
                     if (view) view.classList.add('hidden');
-                    if (btn) btn.className = 'px-3.5 py-1.5 rounded-lg text-zinc-400 hover:text-white transition flex items-center gap-1.5';
+                    if (btn) btn.className = 'px-3.5 py-1.5 rounded-lg text-graphite-400 hover:text-white transition flex items-center gap-1.5';
                 }
             });
         }
@@ -689,13 +700,13 @@
             const tierBadge = document.getElementById('verdict-tier-badge');
 
             if (isPhish) {
-                bannerCard.className = 'panel-surface rounded-2xl p-6 shadow-xl space-y-5 border border-red-500/50 bg-red-950/20';
+                bannerCard.className = 'tactile-card rounded-2xl p-6 space-y-5 border border-red-500/50 bg-red-950/20';
                 titleText.textContent = 'Malicious Threat Detected';
                 titleText.className = 'text-xl font-extrabold text-red-400 mt-0.5';
                 tierBadge.textContent = `${data.risk_level} Risk (${data.label})`;
                 tierBadge.className = 'px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider bg-red-950 text-red-300 border border-red-800';
             } else {
-                bannerCard.className = 'panel-surface rounded-2xl p-6 shadow-xl space-y-5 border border-emerald-500/50 bg-emerald-950/20';
+                bannerCard.className = 'tactile-card rounded-2xl p-6 space-y-5 border border-emerald-500/50 bg-emerald-950/20';
                 titleText.textContent = 'Safe & Legitimate Communication';
                 titleText.className = 'text-xl font-extrabold text-emerald-400 mt-0.5';
                 tierBadge.textContent = `${data.risk_level} Risk (Safe)`;
@@ -717,7 +728,7 @@
             const sender = data.sender_analysis || {};
             const senderEl = document.getElementById('metric-sender-domain');
             senderEl.textContent = `@${sender.domain || 'unknown'}`;
-            senderEl.className = sender.is_trusted ? 'font-semibold font-mono text-emerald-400' : (sender.typosquatting_detected ? 'font-semibold font-mono text-red-400' : 'font-semibold font-mono text-zinc-300');
+            senderEl.className = sender.is_trusted ? 'font-semibold font-mono text-emerald-400' : (sender.typosquatting_detected ? 'font-semibold font-mono text-red-400' : 'font-semibold font-mono text-graphite-200');
 
             const typoEl = document.getElementById('metric-typo-flag');
             if (sender.typosquatting_detected) {
@@ -725,7 +736,7 @@
                 typoEl.className = 'font-semibold font-mono text-red-400';
             } else {
                 typoEl.textContent = 'None detected';
-                typoEl.className = 'font-semibold font-mono text-zinc-400';
+                typoEl.className = 'font-semibold font-mono text-graphite-400';
             }
 
             const urls = data.urls_inspected || [];
@@ -735,7 +746,7 @@
             const reasonsList = document.getElementById('reasons-items-list');
             document.getElementById('reasons-count-badge').textContent = `${data.reasons.length} factors`;
             reasonsList.innerHTML = data.reasons.map(r => `
-                <li class="flex items-start gap-2 text-zinc-200 text-xs leading-relaxed p-2.5 rounded-xl bg-[#141417] border border-zinc-700">
+                <li class="flex items-start gap-2 text-graphite-200 text-xs leading-relaxed p-2.5 rounded-xl tactile-card-recessed">
                     <span class="${isPhish ? 'text-red-400' : 'text-emerald-400'} font-bold mt-0.5">&bull;</span>
                     <span>${r}</span>
                 </li>
@@ -747,9 +758,9 @@
             if (urls.length > 0) {
                 urlsPanel.classList.remove('hidden');
                 urlsList.innerHTML = urls.map(u => `
-                    <div class="p-3 bg-[#141417] rounded-xl border ${u.risk_score > 30 ? 'border-red-500/50' : 'border-zinc-700'} text-xs space-y-1.5">
+                    <div class="p-3 tactile-card-recessed rounded-xl border ${u.risk_score > 30 ? 'border-red-500/50' : 'border-white/[0.06]'} text-xs space-y-1.5">
                         <div class="flex items-center justify-between">
-                            <span class="font-mono text-zinc-200 truncate max-w-xs sm:max-w-sm">${u.url}</span>
+                            <span class="font-mono text-graphite-200 truncate max-w-xs sm:max-w-sm">${u.url}</span>
                             <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold ${u.risk_score > 30 ? 'bg-red-950 text-red-300 border border-red-800' : 'bg-emerald-950 text-emerald-300 border border-emerald-800'}">Risk ${u.risk_score}%</span>
                         </div>
                         ${u.issues.length ? `<div class="text-red-400 text-[11px] font-mono">${u.issues.join(' &bull; ')}</div>` : '<div class="text-emerald-400 text-[11px]">Clean hyperlink architecture</div>'}
@@ -791,7 +802,7 @@
             if (!url) return;
             const box = document.getElementById('direct-url-result');
             box.classList.remove('hidden');
-            box.innerHTML = '<span class="text-xs text-zinc-400 font-mono">Inspecting URL structure...</span>';
+            box.innerHTML = '<span class="text-xs text-graphite-400 font-mono">Inspecting URL structure...</span>';
             try {
                 const res = await fetch(`${API_BASE}/analyze/url`, {
                     method: 'POST',
@@ -800,12 +811,12 @@
                 });
                 const d = await res.json();
                 box.innerHTML = `
-                    <div class="p-3 bg-[#141417] rounded-xl border ${d.risk_score > 30 ? 'border-red-500/50' : 'border-zinc-700'} text-xs space-y-1">
+                    <div class="p-3 tactile-card-recessed rounded-xl border ${d.risk_score > 30 ? 'border-red-500/50' : 'border-white/[0.06]'} text-xs space-y-1">
                         <div class="flex justify-between font-bold">
                             <span>Threat Score: ${d.risk_score}%</span>
                             <span class="${d.risk_score > 30 ? 'text-red-400' : 'text-emerald-400'}">${d.risk_score > 30 ? 'High Risk' : 'Low Risk'}</span>
                         </div>
-                        <div class="text-zinc-400 mt-1">${d.issues.length ? d.issues.map(i => `&bull; ${i}`).join('<br>') : 'Clean URL structure.'}</div>
+                        <div class="text-graphite-400 mt-1">${d.issues.length ? d.issues.map(i => `&bull; ${i}`).join('<br>') : 'Clean URL structure.'}</div>
                     </div>
                 `;
             } catch (e) {
@@ -818,7 +829,7 @@
             if (!domain_or_email) return;
             const box = document.getElementById('direct-domain-result');
             box.classList.remove('hidden');
-            box.innerHTML = '<span class="text-xs text-zinc-400 font-mono">Checking domain reputation...</span>';
+            box.innerHTML = '<span class="text-xs text-graphite-400 font-mono">Checking domain reputation...</span>';
             try {
                 const res = await fetch(`${API_BASE}/analyze/domain`, {
                     method: 'POST',
@@ -827,12 +838,12 @@
                 });
                 const d = await res.json();
                 box.innerHTML = `
-                    <div class="p-3 bg-[#141417] rounded-xl border ${d.is_trusted ? 'border-emerald-500/50' : (d.typosquatting_detected ? 'border-red-500/50' : 'border-zinc-700')} text-xs space-y-1">
+                    <div class="p-3 tactile-card-recessed rounded-xl border ${d.is_trusted ? 'border-emerald-500/50' : (d.typosquatting_detected ? 'border-red-500/50' : 'border-white/[0.06]')} text-xs space-y-1">
                         <div class="flex justify-between font-bold">
                             <span>Domain: @${d.domain}</span>
                             <span class="${d.is_trusted ? 'text-emerald-400' : (d.typosquatting_detected ? 'text-red-400' : 'text-amber-400')}">${d.risk_level} Risk</span>
                         </div>
-                        <div class="text-zinc-400 text-[11px] mt-1">
+                        <div class="text-graphite-400 text-[11px] mt-1">
                             Verified Brand: ${d.is_trusted ? 'Yes' : 'No'} &bull; Domain Entropy: ${d.entropy}<br>
                             ${d.typosquatting_detected ? `🚨 Typosquatting: Impersonating ${d.impersonated_brand}` : 'No brand typosquatting flags.'}
                         </div>
@@ -857,7 +868,7 @@
             if (!raw) return;
             const resBox = document.getElementById('batch-table-container');
             resBox.classList.remove('hidden');
-            resBox.innerHTML = '<span class="text-xs text-zinc-400 font-mono">Running bulk intelligence analysis...</span>';
+            resBox.innerHTML = '<span class="text-xs text-graphite-400 font-mono">Running bulk intelligence analysis...</span>';
             try {
                 const emails = JSON.parse(raw);
                 const res = await fetch(`${API_BASE}/predict/batch`, {
@@ -867,9 +878,9 @@
                 });
                 const list = await res.json();
                 resBox.innerHTML = `
-                    <div class="overflow-x-auto rounded-xl border border-zinc-700">
+                    <div class="overflow-x-auto rounded-xl border border-white/[0.08]">
                         <table class="w-full text-left text-xs">
-                            <thead class="bg-[#141417] text-zinc-400 uppercase font-semibold text-[10px]">
+                            <thead class="bg-[#14151a] text-graphite-400 uppercase font-semibold text-[10px]">
                                 <tr>
                                     <th class="p-3">#</th>
                                     <th class="p-3">Verdict</th>
@@ -878,14 +889,14 @@
                                     <th class="p-3">Primary Diagnostic</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-zinc-700 bg-[#1a1a1e] font-mono">
+                            <tbody class="divide-y divide-white/[0.06] bg-[#17181e] font-mono">
                                 ${list.map((r, i) => `
                                     <tr>
-                                        <td class="p-3 text-zinc-500">${i+1}</td>
+                                        <td class="p-3 text-graphite-500">${i+1}</td>
                                         <td class="p-3 font-bold ${r.label === 'Phishing' ? 'text-red-400' : 'text-emerald-400'}">${r.label}</td>
                                         <td class="p-3 text-white">${(r.probability*100).toFixed(1)}%</td>
                                         <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold ${r.risk_level === 'High' ? 'bg-red-950 text-red-300 border border-red-800' : (r.risk_level === 'Medium' ? 'bg-amber-950 text-amber-300 border border-amber-800' : 'bg-emerald-950 text-emerald-300 border border-emerald-800')}">${r.risk_level}</span></td>
-                                        <td class="p-3 font-sans text-zinc-300 truncate max-w-xs">${r.reasons[0] || 'Clean'}</td>
+                                        <td class="p-3 font-sans text-graphite-300 truncate max-w-xs">${r.reasons[0] || 'Clean'}</td>
                                     </tr>
                                 `).join('')}
                             </tbody>
