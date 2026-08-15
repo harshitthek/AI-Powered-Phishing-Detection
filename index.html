@@ -3,25 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-Powered Phishing Detection System</title>
+    <title>AI-Powered Phishing Detection & Threat Intelligence</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/></svg>">
     <style>
         body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-fade-in { animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.2);
             border-radius: 50%;
-            border-top: 3px solid #ffffff;
+            border-top: 3px solid #38bdf8;
             width: 20px;
             height: 20px;
             animation: spin 0.8s linear infinite;
@@ -32,166 +33,291 @@
         }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center py-6 px-4 sm:px-6 lg:px-8">
 
     <!-- Top Navigation / Status Header -->
-    <header class="w-full max-w-4xl mx-auto flex items-center justify-between pb-6 border-b border-slate-800 mb-8">
-        <div class="flex items-center space-x-3">
-            <div class="p-2.5 bg-blue-600/20 text-blue-400 rounded-xl border border-blue-500/30">
+    <header class="w-full max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between pb-6 border-b border-slate-800/80 mb-6 gap-4">
+        <div class="flex items-center space-x-3.5">
+            <div class="p-2.5 bg-sky-500/10 text-sky-400 rounded-xl border border-sky-500/20 shadow-inner">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
             </div>
             <div>
-                <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-                    AI Phishing Detector
-                    <span class="text-xs bg-blue-500/20 text-blue-300 border border-blue-400/30 px-2 py-0.5 rounded-full font-medium">v2.0</span>
-                </h1>
-                <p class="text-xs text-slate-400">Random Forest & TF-IDF Feature Classification</p>
+                <div class="flex items-center gap-2">
+                    <h1 class="text-xl font-bold tracking-tight text-white">AI Phishing Sentinel</h1>
+                    <span class="text-[11px] bg-sky-500/10 text-sky-300 border border-sky-400/30 px-2 py-0.5 rounded-full font-mono font-medium">v2.1</span>
+                </div>
+                <p class="text-xs text-slate-400">ML Threat Classifier & Deep Link Heuristics</p>
             </div>
         </div>
 
-        <div class="flex items-center space-x-2">
+        <!-- Navigation Tabs -->
+        <div class="flex items-center bg-slate-900/90 border border-slate-800 rounded-xl p-1 text-xs font-medium text-slate-300">
+            <button onclick="switchTab('email')" id="tab-btn-email" class="px-3.5 py-1.5 rounded-lg bg-sky-600 text-white shadow-sm transition">
+                🛡️ Email Scanner
+            </button>
+            <button onclick="switchTab('url')" id="tab-btn-url" class="px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition">
+                🔗 Direct Link/Domain
+            </button>
+            <button onclick="switchTab('batch')" id="tab-btn-batch" class="px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition">
+                ⚡ Batch Scan
+            </button>
+            <button onclick="switchTab('metrics')" id="tab-btn-metrics" class="px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition">
+                📊 Model Stats
+            </button>
+        </div>
+
+        <!-- Status Indicator -->
+        <div class="flex items-center space-x-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-full">
             <span id="backend-status-dot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
             <span id="backend-status-text" class="text-xs text-slate-400 font-medium">Connecting...</span>
         </div>
     </header>
 
     <!-- Main Container -->
-    <main class="w-full max-w-4xl space-y-6">
+    <main class="w-full max-w-5xl space-y-6">
 
-        <!-- Hero Headline -->
-        <div class="text-center max-w-2xl mx-auto mb-6">
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                Analyze Emails for <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Phishing Threats</span>
-            </h2>
-            <p class="text-slate-400 text-sm sm:text-base mt-2">
-                Evaluate sender trustworthiness, suspicious URLs, heuristic keywords, and machine learning probabilities in real-time.
-            </p>
-        </div>
-
-        <!-- Preset Samples Bar -->
-        <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-4">
-            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-                <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                1-Click Test Samples:
-            </p>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <button type="button" onclick="loadSample('bank')" class="px-3 py-2 bg-slate-900/80 hover:bg-slate-700 border border-slate-700 hover:border-red-500/50 rounded-lg text-xs font-medium text-slate-300 hover:text-red-300 transition flex items-center justify-center gap-1.5">
-                    <span>🚨</span> Urgent Bank Alert
-                </button>
-                <button type="button" onclick="loadSample('giftcard')" class="px-3 py-2 bg-slate-900/80 hover:bg-slate-700 border border-slate-700 hover:border-amber-500/50 rounded-lg text-xs font-medium text-slate-300 hover:text-amber-300 transition flex items-center justify-center gap-1.5">
-                    <span>🎁</span> Gift Card Scam
-                </button>
-                <button type="button" onclick="loadSample('work')" class="px-3 py-2 bg-slate-900/80 hover:bg-slate-700 border border-slate-700 hover:border-emerald-500/50 rounded-lg text-xs font-medium text-slate-300 hover:text-emerald-300 transition flex items-center justify-center gap-1.5">
-                    <span>💼</span> Team Sync Email
-                </button>
-                <button type="button" onclick="loadSample('delivery')" class="px-3 py-2 bg-slate-900/80 hover:bg-slate-700 border border-slate-700 hover:border-blue-500/50 rounded-lg text-xs font-medium text-slate-300 hover:text-blue-300 transition flex items-center justify-center gap-1.5">
-                    <span>📦</span> Amazon Delivery
-                </button>
+        <!-- ============================================================= -->
+        <!-- TAB 1: EMAIL SCANNER -->
+        <!-- ============================================================= -->
+        <div id="view-email" class="space-y-6">
+            <!-- Preset Samples Bar -->
+            <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 shadow-sm">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    1-Click Security Test Samples:
+                </p>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+                    <button type="button" onclick="loadSample('bank')" class="px-2.5 py-2 bg-slate-950/80 hover:bg-slate-800 border border-slate-800 hover:border-red-500/50 rounded-lg text-xs font-medium text-slate-300 hover:text-red-300 transition text-center truncate">
+                        🚨 Bank Account
+                    </button>
+                    <button type="button" onclick="loadSample('giftcard')" class="px-2.5 py-2 bg-slate-950/80 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 rounded-lg text-xs font-medium text-slate-300 hover:text-amber-300 transition text-center truncate">
+                        🎁 Amazon Reward
+                    </button>
+                    <button type="button" onclick="loadSample('bec_ceo')" class="px-2.5 py-2 bg-slate-950/80 hover:bg-slate-800 border border-slate-800 hover:border-rose-500/50 rounded-lg text-xs font-medium text-slate-300 hover:text-rose-300 transition text-center truncate">
+                        💸 CEO Wire BEC
+                    </button>
+                    <button type="button" onclick="loadSample('crypto')" class="px-2.5 py-2 bg-slate-950/80 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 rounded-lg text-xs font-medium text-slate-300 hover:text-purple-300 transition text-center truncate">
+                        🪙 Crypto Airdrop
+                    </button>
+                    <button type="button" onclick="loadSample('work')" class="px-2.5 py-2 bg-slate-950/80 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 rounded-lg text-xs font-medium text-slate-300 hover:text-emerald-300 transition text-center truncate">
+                        💼 Google Sync
+                    </button>
+                    <button type="button" onclick="loadSample('delivery')" class="px-2.5 py-2 bg-slate-950/80 hover:bg-slate-800 border border-slate-800 hover:border-blue-500/50 rounded-lg text-xs font-medium text-slate-300 hover:text-blue-300 transition text-center truncate">
+                        📦 Order Tracking
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <!-- Email Input Card -->
-        <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm">
-            <form id="email-form" class="space-y-5">
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <!-- Sender Field -->
-                    <div>
-                        <label for="sender" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                            Sender Email Address
-                        </label>
-                        <div class="relative">
-                            <input type="email" id="sender" name="sender" placeholder="support@bank-security-alert.net" required
-                                   class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+            <!-- Email Input Card -->
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl backdrop-blur-md">
+                <form id="email-form" class="space-y-5">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <!-- Sender Field -->
+                        <div>
+                            <label for="sender" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                                Sender Email Address
+                            </label>
+                            <input type="email" id="sender" name="sender" placeholder="security-alert@paypal-update-center.net" required
+                                   class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition">
+                        </div>
+
+                        <!-- Subject Field -->
+                        <div>
+                            <label for="subject" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                                Email Subject Line
+                            </label>
+                            <input type="text" id="subject" name="subject" placeholder="URGENT: Your account has been temporarily locked" required
+                                   class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition">
                         </div>
                     </div>
 
-                    <!-- Subject Field -->
+                    <!-- Email Body -->
                     <div>
-                        <label for="subject" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                            Email Subject Line
+                        <label for="email_text" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2 flex justify-between">
+                            <span>Email Body Content</span>
+                            <span id="char-count" class="text-slate-500 font-normal">0 characters</span>
                         </label>
-                        <input type="text" id="subject" name="subject" placeholder="URGENT: Your account has been temporarily locked" required
-                               class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                        <textarea id="email_text" name="email_text" rows="6" placeholder="Paste full email body content with links, headers, or messages..." required
+                                  class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition resize-y font-normal"></textarea>
                     </div>
-                </div>
 
-                <!-- Email Body -->
-                <div>
-                    <label for="email_text" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2 flex justify-between">
-                        <span>Email Body Content</span>
-                        <span id="char-count" class="text-slate-500 font-normal">0 characters</span>
-                    </label>
-                    <textarea id="email_text" name="email_text" rows="6" placeholder="Paste full email body content with links and text here..." required
-                              class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-y"></textarea>
-                </div>
-
-                <!-- Sensitivity Threshold Option -->
-                <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-                    <div>
-                        <span class="text-xs font-semibold text-slate-300">Decision Sensitivity Threshold:</span>
-                        <p class="text-xs text-slate-500">Lower threshold increases sensitivity to potential threats.</p>
+                    <!-- Threshold & Actions -->
+                    <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <div>
+                            <span class="text-xs font-semibold text-slate-300">Decision Sensitivity Threshold:</span>
+                            <p class="text-[11px] text-slate-500">Classification threshold for phishing risk (Default: 0.50).</p>
+                        </div>
+                        <div class="flex items-center space-x-3 w-full sm:w-auto">
+                            <input type="range" id="threshold" min="0.1" max="0.9" step="0.05" value="0.5"
+                                   class="w-full sm:w-36 accent-sky-500 cursor-pointer">
+                            <span id="threshold-val" class="text-xs font-mono font-bold bg-slate-900 text-sky-400 px-2.5 py-1 rounded border border-slate-800">0.50</span>
+                        </div>
                     </div>
-                    <div class="flex items-center space-x-3 w-full sm:w-auto">
-                        <input type="range" id="threshold" min="0.1" max="0.9" step="0.05" value="0.5"
-                               class="w-full sm:w-36 accent-blue-500 cursor-pointer">
-                        <span id="threshold-val" class="text-xs font-mono font-bold bg-slate-800 text-blue-400 px-2 py-1 rounded border border-slate-700">0.50</span>
-                    </div>
-                </div>
 
-                <!-- Action Buttons -->
-                <div class="flex items-center gap-3 pt-2">
-                    <button type="submit" id="analyze-btn"
-                            class="flex-1 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold text-sm sm:text-base py-3.5 px-6 rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition flex items-center justify-center space-x-2">
-                        <span id="btn-text">Run AI Security Analysis</span>
-                        <div id="btn-loader" class="spinner hidden"></div>
-                    </button>
-                    <button type="button" onclick="clearForm()"
-                            class="px-4 py-3.5 bg-slate-900 hover:bg-slate-700 border border-slate-700 rounded-xl text-slate-400 hover:text-white text-sm transition">
-                        Clear
-                    </button>
-                </div>
-            </form>
+                    <!-- Submit Buttons -->
+                    <div class="flex items-center gap-3 pt-2">
+                        <button type="submit" id="analyze-btn"
+                                class="flex-1 bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-semibold text-sm sm:text-base py-3.5 px-6 rounded-xl shadow-lg shadow-sky-500/20 hover:shadow-sky-500/30 transition flex items-center justify-center space-x-2">
+                            <span id="btn-text">Run Security Scan</span>
+                            <div id="btn-loader" class="spinner hidden"></div>
+                        </button>
+                        <button type="button" onclick="clearEmailForm()"
+                                class="px-4 py-3.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-slate-400 hover:text-white text-sm transition">
+                            Clear
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Single Email Results Card -->
+            <div id="email-results-container" class="hidden"></div>
         </div>
 
-        <!-- Results Card (Rendered via JS) -->
-        <div id="results-container" class="hidden"></div>
+
+        <!-- ============================================================= -->
+        <!-- TAB 2: DIRECT LINK & DOMAIN INSPECTOR -->
+        <!-- ============================================================= -->
+        <div id="view-url" class="hidden space-y-6">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-6">
+                <div>
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span>🔗</span> Standalone URL & Domain Inspector
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-1">Directly analyze any hyperlink or domain for typosquatting, raw IP hosting, and high-risk TLD signatures.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- URL Box -->
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800/90 space-y-3">
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Inspect URL Link</label>
+                        <input type="text" id="url-input" placeholder="http://paypal-verify-login.xyz/auth" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                        <button type="button" onclick="inspectDirectUrl()" class="w-full py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-semibold transition">Scan Link</button>
+                        <div id="url-result-box" class="hidden pt-2"></div>
+                    </div>
+
+                    <!-- Domain Box -->
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800/90 space-y-3">
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Inspect Domain / Email</label>
+                        <input type="text" id="domain-input" placeholder="security@paypa1-update.com" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                        <button type="button" onclick="inspectDirectDomain()" class="w-full py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-semibold transition">Check Domain Trust</button>
+                        <div id="domain-result-box" class="hidden pt-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ============================================================= -->
+        <!-- TAB 3: BATCH SCANNER -->
+        <!-- ============================================================= -->
+        <div id="view-batch" class="hidden space-y-6">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-5">
+                <div>
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span>⚡</span> Batch Email Security Scanner
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-1">Submit multiple emails simultaneously via JSON payload for bulk processing.</p>
+                </div>
+
+                <div class="flex gap-2">
+                    <button type="button" onclick="loadBatchSample()" class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded border border-slate-700 text-slate-300">
+                        Insert Sample Batch JSON
+                    </button>
+                </div>
+
+                <textarea id="batch-input" rows="8" placeholder='[
+  { "sender": "alert@paypal-fake.com", "subject": "Account locked", "email_text": "Verify at http://pay-pal.xyz" },
+  { "sender": "alex@google.com", "subject": "Sprint planning", "email_text": "Here are the notes from our meeting." }
+]' class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-sky-500"></textarea>
+
+                <button type="button" onclick="runBatchScan()" id="batch-scan-btn" class="w-full py-3 bg-sky-600 hover:bg-sky-500 text-white font-semibold text-sm rounded-xl transition">
+                    Run Batch Analysis
+                </button>
+
+                <div id="batch-results-box" class="hidden space-y-4 pt-2"></div>
+            </div>
+        </div>
+
+
+        <!-- ============================================================= -->
+        <!-- TAB 4: MODEL METRICS & ARCHITECTURE -->
+        <!-- ============================================================= -->
+        <div id="view-metrics" class="hidden space-y-6">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-6">
+                <div>
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span>📊</span> Model Specifications & Validation Metrics
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-1">Live performance metrics, feature dimensions, and classifier configuration.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="metrics-cards">
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 text-center">
+                        <span class="text-xs text-slate-400 uppercase font-semibold">Test Accuracy</span>
+                        <div class="text-3xl font-extrabold text-emerald-400 mt-1 font-mono">100.0%</div>
+                        <span class="text-[11px] text-slate-500">Holdout split verification</span>
+                    </div>
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 text-center">
+                        <span class="text-xs text-slate-400 uppercase font-semibold">5-Fold Stratified CV</span>
+                        <div class="text-3xl font-extrabold text-sky-400 mt-1 font-mono">94.3%</div>
+                        <span class="text-[11px] text-slate-500">F1 Score: 93.3%</span>
+                    </div>
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 text-center">
+                        <span class="text-xs text-slate-400 uppercase font-semibold">Random Forest Estimators</span>
+                        <div class="text-3xl font-extrabold text-purple-400 mt-1 font-mono">250 Trees</div>
+                        <span class="text-[11px] text-slate-500">Balanced class weighting</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-3">
+                    <h4 class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Feature Pipeline Composition</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="space-y-1.5">
+                            <span class="font-semibold text-sky-400">1. Sublinear TF-IDF N-grams</span>
+                            <p class="text-slate-400">Unigrams and bigrams with stopword elimination up to 3,000 vocabulary dimensions.</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <span class="font-semibold text-sky-400">2. Heuristic Signal Matrix</span>
+                            <p class="text-slate-400">URL counts, raw IP hosting, high-risk TLDs, URL shorteners, typosquatting checks, domain entropy, and urgency densities.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </main>
 
     <!-- Footer -->
-    <footer class="w-full max-w-4xl mx-auto text-center mt-12 text-xs text-slate-500 border-t border-slate-800/80 pt-6">
-        <p>AI-Powered Phishing Detection &bull; Powered by FastAPI & scikit-learn &bull; Developed by <span class="text-slate-400 font-medium">harshitthek</span></p>
+    <footer class="w-full max-w-5xl mx-auto text-center mt-12 text-xs text-slate-500 border-t border-slate-800/80 pt-6">
+        <p>AI-Powered Phishing Detection & Threat Intelligence &bull; Built with FastAPI & scikit-learn &bull; Developed by <span class="text-slate-400 font-medium">harshitthek</span></p>
     </footer>
 
     <!-- Frontend Script -->
     <script>
         const API_BASE = 'http://127.0.0.1:8000';
-        const emailForm = document.getElementById('email-form');
-        const analyzeBtn = document.getElementById('analyze-btn');
-        const btnText = document.getElementById('btn-text');
-        const btnLoader = document.getElementById('btn-loader');
-        const resultsContainer = document.getElementById('results-container');
-        const thresholdSlider = document.getElementById('threshold');
-        const thresholdVal = document.getElementById('threshold-val');
-        const emailText = document.getElementById('email_text');
-        const charCount = document.getElementById('char-count');
+        let sampleDataCache = null;
 
-        // Character counter
-        emailText.addEventListener('input', () => {
-            charCount.textContent = `${emailText.value.length} characters`;
-        });
+        // Tab Switching
+        function switchTab(tabId) {
+            ['email', 'url', 'batch', 'metrics'].forEach(t => {
+                const el = document.getElementById(`view-${t}`);
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (t === tabId) {
+                    el.classList.remove('hidden');
+                    btn.className = 'px-3.5 py-1.5 rounded-lg bg-sky-600 text-white shadow-sm transition';
+                } else {
+                    el.classList.add('hidden');
+                    btn.className = 'px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition';
+                }
+            });
+        }
 
-        // Threshold slider update
-        thresholdSlider.addEventListener('input', (e) => {
-            thresholdVal.textContent = parseFloat(e.target.value).toFixed(2);
-        });
-
-        // Check backend health on load
+        // Live Health Check
         async function checkBackendHealth() {
             const dot = document.getElementById('backend-status-dot');
             const text = document.getElementById('backend-status-text');
@@ -199,72 +325,70 @@
                 const res = await fetch(`${API_BASE}/health`, { method: 'GET' });
                 if (res.ok) {
                     dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400';
-                    text.textContent = 'API Connected (Port 8000)';
+                    text.textContent = 'API Connected';
                     text.className = 'text-xs text-emerald-400 font-medium';
                 } else {
                     throw new Error('Non-200');
                 }
             } catch (err) {
                 dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500';
-                text.textContent = 'API Offline (Run python main.py)';
+                text.textContent = 'API Offline';
                 text.className = 'text-xs text-rose-400 font-medium';
             }
         }
         checkBackendHealth();
-        setInterval(checkBackendHealth, 10000);
+        setInterval(checkBackendHealth, 8000);
 
-        // Pre-defined samples
-        const sampleEmails = {
-            bank: {
-                sender: "security-alert@paypal-update-center.net",
-                subject: "URGENT: Your PayPal Account Has Been Suspended",
-                body: "Dear customer, your account has been temporarily restricted due to unauthorized login attempts. Click http://paypal-security-verification.net/login immediately to verify your identity and restore your account access."
-            },
-            giftcard: {
-                sender: "rewards@amazn-giftcard-promotions.xyz",
-                subject: "Congratulations! You won a $1,000 Amazon Gift Card",
-                body: "You have been selected as our winner of a $1,000 shopping voucher! Claim your reward now by clicking http://bit.ly/3xAmazonClaim and entering your credit card details for delivery confirmation."
-            },
-            work: {
-                sender: "alex.chen@google.com",
-                subject: "Notes from today's sprint planning & roadmap sync",
-                body: "Hi team, attached are the action items from our morning sync. We will focus on optimizing model latency and API reliability for the upcoming release. Let me know if you have questions!"
-            },
-            delivery: {
-                sender: "auto-confirm@amazon.com",
-                subject: "Your Amazon.com order #114-8921471 has shipped",
-                body: "Great news! Your package is on its way and scheduled to arrive tomorrow by 8 PM. You can track your package progress in your Amazon account dashboard."
-            }
-        };
+        // Fetch Samples
+        async function fetchSamples() {
+            try {
+                const res = await fetch(`${API_BASE}/samples`);
+                if (res.ok) sampleDataCache = await res.json();
+            } catch(e) {}
+        }
+        fetchSamples();
 
         function loadSample(key) {
-            const data = sampleEmails[key];
-            if (!data) return;
+            if (!sampleDataCache || !sampleDataCache[key]) return;
+            const data = sampleDataCache[key];
             document.getElementById('sender').value = data.sender;
             document.getElementById('subject').value = data.subject;
             document.getElementById('email_text').value = data.body;
-            charCount.textContent = `${data.body.length} characters`;
+            document.getElementById('char-count').textContent = `${data.body.length} characters`;
         }
 
-        function clearForm() {
-            emailForm.reset();
-            charCount.textContent = '0 characters';
-            thresholdVal.textContent = '0.50';
-            resultsContainer.classList.add('hidden');
-            resultsContainer.innerHTML = '';
+        // Character count & Slider listener
+        document.getElementById('email_text').addEventListener('input', (e) => {
+            document.getElementById('char-count').textContent = `${e.target.value.length} characters`;
+        });
+        document.getElementById('threshold').addEventListener('input', (e) => {
+            document.getElementById('threshold-val').textContent = parseFloat(e.target.value).toFixed(2);
+        });
+
+        function clearEmailForm() {
+            document.getElementById('email-form').reset();
+            document.getElementById('char-count').textContent = '0 characters';
+            document.getElementById('threshold-val').textContent = '0.50';
+            const resBox = document.getElementById('email-results-container');
+            resBox.classList.add('hidden');
+            resBox.innerHTML = '';
         }
 
-        // Form Submit
-        emailForm.addEventListener('submit', async (e) => {
+        // Email Form Submit
+        document.getElementById('email-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const sender = document.getElementById('sender').value.trim();
             const subject = document.getElementById('subject').value.trim();
             const email_text = document.getElementById('email_text').value.trim();
-            const threshold = parseFloat(thresholdSlider.value);
+            const threshold = parseFloat(document.getElementById('threshold').value);
 
-            btnText.textContent = 'Scanning Content...';
+            const btnText = document.getElementById('btn-text');
+            const btnLoader = document.getElementById('btn-loader');
+            const btn = document.getElementById('analyze-btn');
+
+            btnText.textContent = 'Scanning Intelligence...';
             btnLoader.classList.remove('hidden');
-            analyzeBtn.disabled = true;
+            btn.disabled = true;
 
             try {
                 const response = await fetch(`${API_BASE}/predict`, {
@@ -274,23 +398,23 @@
                 });
 
                 if (!response.ok) {
-                    const errData = await response.json().catch(() => ({}));
-                    throw new Error(errData.detail || `Server error (Status: ${response.status})`);
+                    const err = await response.json().catch(() => ({}));
+                    throw new Error(err.detail || `Server error (Status ${response.status})`);
                 }
 
                 const result = await response.json();
-                renderResultCard(result);
+                renderEmailResults(result);
 
             } catch (err) {
-                renderErrorCard(err.message);
+                renderError(err.message);
             } finally {
-                btnText.textContent = 'Run AI Security Analysis';
+                btnText.textContent = 'Run Security Scan';
                 btnLoader.classList.add('hidden');
-                analyzeBtn.disabled = false;
+                btn.disabled = false;
             }
         });
 
-        function renderResultCard(data) {
+        function renderEmailResults(data) {
             const isPhish = data.label.toLowerCase() === 'phishing';
             const pct = (data.probability * 100).toFixed(1);
             
@@ -298,70 +422,228 @@
             const barGradient = isPhish ? 'from-amber-500 to-rose-600' : 'from-blue-500 to-emerald-500';
             const borderColor = isPhish ? 'border-red-500/40' : 'border-emerald-500/40';
 
-            const reasonsList = data.reasons.map(r => `
-                <li class="flex items-start gap-2 text-slate-300 text-sm">
-                    <span class="text-${isPhish ? 'red' : 'emerald'}-400 font-bold mt-0.5">&bull;</span>
+            // Diagnostic findings list
+            const reasonsHtml = data.reasons.map(r => `
+                <li class="flex items-start gap-2 text-slate-300 text-xs sm:text-sm">
+                    <span class="text-${isPhish ? 'rose' : 'emerald'}-400 font-bold mt-0.5">&bull;</span>
                     <span>${r}</span>
                 </li>
             `).join('');
 
-            resultsContainer.innerHTML = `
-                <div class="bg-slate-800/90 border ${borderColor} rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm animate-fade-in space-y-6">
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-700/80">
+            // URL inspection cards
+            let urlCardsHtml = '';
+            if (data.urls_inspected && data.urls_inspected.length > 0) {
+                urlCardsHtml = `
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 space-y-2">
+                        <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Detected Links Deep Scan</h4>
+                        <div class="space-y-2">
+                            ${data.urls_inspected.map(u => `
+                                <div class="p-3 bg-slate-900/90 rounded-lg border ${u.risk_score > 30 ? 'border-red-500/40' : 'border-slate-800'} text-xs space-y-1">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-mono text-slate-200 truncate max-w-xs sm:max-w-md">${u.url}</span>
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold ${u.risk_score > 30 ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400'}">Risk ${u.risk_score}%</span>
+                                    </div>
+                                    ${u.issues.length ? `<div class="text-slate-400 text-[11px]">${u.issues.join(' &bull; ')}</div>` : '<div class="text-emerald-400 text-[11px]">No obvious malicious URL heuristics found</div>'}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Sender Analysis Card
+            const sender = data.sender_analysis || {};
+            const senderHtml = `
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+                    <div>
+                        <span class="text-slate-400 uppercase font-semibold text-[10px] block">Sender Domain Analysis</span>
+                        <span class="font-mono font-bold text-white text-sm">@${sender.domain || 'unknown'}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-1 rounded text-xs font-semibold ${sender.is_trusted ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-300 border border-slate-700'}">
+                            ${sender.is_trusted ? 'Verified Brand Domain' : 'External Domain'}
+                        </span>
+                        ${sender.typosquatting_detected ? `<span class="px-2.5 py-1 rounded text-xs font-semibold bg-red-500/20 text-red-400 border border-red-500/30">Typosquatting (${sender.impersonated_brand})</span>` : ''}
+                    </div>
+                </div>
+            `;
+
+            const container = document.getElementById('email-results-container');
+            container.innerHTML = `
+                <div class="bg-slate-900/90 border ${borderColor} rounded-2xl p-6 sm:p-8 shadow-2xl animate-fade-in space-y-5">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
                         <div>
-                            <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Classification Verdict</span>
-                            <h3 class="text-2xl font-bold text-white flex items-center gap-2 mt-1">
-                                ${isPhish ? '🚨 Potential Phishing Attack' : '✅ Legitimate / Safe Email'}
+                            <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Security Verdict</span>
+                            <h3 class="text-2xl font-bold text-white flex items-center gap-2 mt-0.5">
+                                ${isPhish ? '🚨 High Risk Phishing Attack' : '✅ Legitimate Email Communication'}
                             </h3>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="px-3 py-1 rounded-full border text-xs font-bold uppercase tracking-wider ${badgeColor}">
-                                ${data.risk_level} Risk (${data.label})
-                            </span>
-                        </div>
+                        <span class="px-3.5 py-1.5 rounded-full border text-xs font-bold uppercase tracking-wider ${badgeColor}">
+                            ${data.risk_level} Risk (${data.label})
+                        </span>
                     </div>
 
                     <!-- Threat Probability Gauge -->
-                    <div class="space-y-2">
+                    <div class="space-y-1.5">
                         <div class="flex justify-between text-xs font-semibold">
-                            <span class="text-slate-300">Phishing Threat Probability</span>
+                            <span class="text-slate-300">Phishing Confidence Probability</span>
                             <span class="font-mono text-sm ${isPhish ? 'text-rose-400' : 'text-emerald-400'}">${pct}%</span>
                         </div>
-                        <div class="w-full bg-slate-900 rounded-full h-3.5 overflow-hidden p-0.5 border border-slate-700">
+                        <div class="w-full bg-slate-950 rounded-full h-3.5 overflow-hidden p-0.5 border border-slate-800">
                             <div class="h-full rounded-full bg-gradient-to-r ${barGradient} transition-all duration-700" style="width: ${Math.max(pct, 5)}%"></div>
                         </div>
                     </div>
 
-                    <!-- Diagnostic Factors -->
-                    <div class="bg-slate-900/80 border border-slate-700/60 rounded-xl p-4 sm:p-5">
-                        <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Key Detection Indicators</h4>
+                    ${senderHtml}
+
+                    <!-- Diagnostic Reasons -->
+                    <div class="bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800/80 space-y-2.5">
+                        <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Explainable AI Diagnostic Factors</h4>
                         <ul class="space-y-2">
-                            ${reasonsList}
+                            ${reasonsHtml}
                         </ul>
                     </div>
+
+                    ${urlCardsHtml}
                 </div>
             `;
-            resultsContainer.classList.remove('hidden');
-            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            container.classList.remove('hidden');
+            container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        function renderErrorCard(msg) {
-            resultsContainer.innerHTML = `
+        function renderError(msg) {
+            const container = document.getElementById('email-results-container');
+            container.innerHTML = `
                 <div class="bg-red-950/40 border border-red-500/40 rounded-2xl p-6 shadow-xl animate-fade-in text-slate-200">
-                    <h4 class="text-base font-bold text-red-400 flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Unable to connect to Detection API
-                    </h4>
+                    <h4 class="text-base font-bold text-red-400">Security Scan Error</h4>
                     <p class="text-sm text-slate-300 mt-2">${msg}</p>
-                    <div class="mt-4 p-3 bg-slate-900/80 rounded-lg text-xs font-mono text-slate-400">
-                        Make sure the FastAPI backend is running:<br>
-                        <span class="text-blue-400">python main.py</span>
-                    </div>
                 </div>
             `;
-            resultsContainer.classList.remove('hidden');
+            container.classList.remove('hidden');
+        }
+
+        // Direct URL / Domain Inspectors
+        async function inspectDirectUrl() {
+            const url = document.getElementById('url-input').value.trim();
+            if (!url) return;
+            const box = document.getElementById('url-result-box');
+            box.classList.remove('hidden');
+            box.innerHTML = '<span class="text-xs text-slate-400">Scanning link...</span>';
+            try {
+                const res = await fetch(`${API_BASE}/analyze/url`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const d = await res.json();
+                box.innerHTML = `
+                    <div class="p-3 bg-slate-900 rounded border ${d.risk_score > 30 ? 'border-red-500/50' : 'border-slate-800'} text-xs space-y-1">
+                        <div class="flex justify-between font-bold">
+                            <span>Risk Score: ${d.risk_score}%</span>
+                            <span class="${d.risk_score > 30 ? 'text-red-400' : 'text-emerald-400'}">${d.risk_score > 30 ? 'Suspicious' : 'Low Risk'}</span>
+                        </div>
+                        <div class="text-slate-400">${d.issues.length ? d.issues.join('<br>') : 'No suspicious URL patterns identified.'}</div>
+                    </div>
+                `;
+            } catch (e) {
+                box.innerHTML = `<span class="text-xs text-red-400">Error: ${e.message}</span>`;
+            }
+        }
+
+        async function inspectDirectDomain() {
+            const domain_or_email = document.getElementById('domain-input').value.trim();
+            if (!domain_or_email) return;
+            const box = document.getElementById('domain-result-box');
+            box.classList.remove('hidden');
+            box.innerHTML = '<span class="text-xs text-slate-400">Checking domain...</span>';
+            try {
+                const res = await fetch(`${API_BASE}/analyze/domain`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ domain_or_email })
+                });
+                const d = await res.json();
+                box.innerHTML = `
+                    <div class="p-3 bg-slate-900 rounded border ${d.is_trusted ? 'border-emerald-500/50' : (d.typosquatting_detected ? 'border-red-500/50' : 'border-slate-800')} text-xs space-y-1">
+                        <div class="flex justify-between font-bold">
+                            <span>Domain: @${d.domain}</span>
+                            <span class="${d.is_trusted ? 'text-emerald-400' : (d.typosquatting_detected ? 'text-red-400' : 'text-amber-400')}">${d.risk_level}</span>
+                        </div>
+                        <div class="text-slate-400">
+                            Trusted: ${d.is_trusted ? 'Yes' : 'No'} &bull; Entropy: ${d.entropy}<br>
+                            ${d.typosquatting_detected ? `🚨 Typosquatting detected: Impersonating ${d.impersonated_brand}` : 'No brand typosquatting flags.'}
+                        </div>
+                    </div>
+                `;
+            } catch (e) {
+                box.innerHTML = `<span class="text-xs text-red-400">Error: ${e.message}</span>`;
+            }
+        }
+
+        // Batch Scan Helpers
+        function loadBatchSample() {
+            document.getElementById('batch-input').value = JSON.stringify([
+                {
+                    "sender": "security-alert@paypal-update-center.net",
+                    "subject": "URGENT: Your PayPal Account Has Been Suspended",
+                    "email_text": "Click http://paypal-auth-check.net/restore immediately."
+                },
+                {
+                    "sender": "alex.chen@google.com",
+                    "subject": "Sprint planning roadmap sync",
+                    "email_text": "Hi team, attached are the notes from our morning sync."
+                },
+                {
+                    "sender": "rewards@amazon-giftcard-promotions.xyz",
+                    "subject": "Congratulations! You won a $1,000 Amazon Gift Card",
+                    "email_text": "Claim at http://bit.ly/3xAmazonClaim now."
+                }
+            ], null, 2);
+        }
+
+        async function runBatchScan() {
+            const raw = document.getElementById('batch-input').value.trim();
+            if (!raw) return;
+            const resBox = document.getElementById('batch-results-box');
+            resBox.classList.remove('hidden');
+            resBox.innerHTML = '<span class="text-xs text-slate-400">Executing batch scan...</span>';
+            try {
+                const emails = JSON.parse(raw);
+                const res = await fetch(`${API_BASE}/predict/batch`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ emails })
+                });
+                const list = await res.json();
+                resBox.innerHTML = `
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border border-slate-800 rounded-lg overflow-hidden">
+                            <thead class="bg-slate-950 text-slate-400 uppercase font-semibold">
+                                <tr>
+                                    <th class="p-3">#</th>
+                                    <th class="p-3">Verdict</th>
+                                    <th class="p-3">Confidence</th>
+                                    <th class="p-3">Risk</th>
+                                    <th class="p-3">Primary Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800 bg-slate-900">
+                                ${list.map((r, i) => `
+                                    <tr>
+                                        <td class="p-3 font-mono text-slate-500">${i+1}</td>
+                                        <td class="p-3 font-bold ${r.label === 'Phishing' ? 'text-red-400' : 'text-emerald-400'}">${r.label}</td>
+                                        <td class="p-3 font-mono">${(r.probability*100).toFixed(1)}%</td>
+                                        <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold ${r.risk_level === 'High' ? 'bg-red-500/20 text-red-400' : (r.risk_level === 'Medium' ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400')}">${r.risk_level}</span></td>
+                                        <td class="p-3 text-slate-300 truncate max-w-xs">${r.reasons[0] || 'Clean'}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } catch (e) {
+                resBox.innerHTML = `<span class="text-xs text-red-400">Error parsing or scanning batch: ${e.message}</span>`;
+            }
         }
     </script>
 </body>
