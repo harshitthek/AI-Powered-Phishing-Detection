@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhishShield Studio — Next-Gen Threat Intelligence & Triage Cockpit</title>
+    <title>PhishShield AI — Intelligent Phishing Threat Scanner</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -11,14 +11,10 @@
             theme: {
                 extend: {
                     colors: {
-                        cockpit: {
-                            bg: '#0c0f17',
-                            sidebar: '#111622',
-                            card: '#161c2b',
-                            cardHover: '#1c2436',
-                            border: '#232d42',
-                            text: '#f1f5f9',
-                            muted: '#94a3b8'
+                        brand: {
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
                         }
                     },
                     fontFamily: {
@@ -32,1085 +28,336 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2.2'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/></svg>">
 
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0c0f17;
-            color: #f1f5f9;
-            overflow: hidden;
+            background-color: #12161f;
+            color: #e2e8f0;
         }
 
-        /* Sleek custom scrollbars */
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        /* Subtle smooth scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #232d42; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+        ::-webkit-scrollbar-thumb { background: #2a3344; border-radius: 4px; }
 
-        /* Threat X-Ray Badges in reader */
-        .threat-tag {
-            background: rgba(244, 63, 94, 0.18);
-            color: #fda4af;
-            border-bottom: 2px solid #f43f5e;
-            padding: 1px 5px;
-            border-radius: 3px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-        .threat-tag:hover {
-            background: rgba(244, 63, 94, 0.35);
-            color: #ffffff;
+        .clean-card {
+            background-color: #1a202c;
+            border: 1px solid #2d3748;
         }
 
-        .link-tag {
-            background: rgba(245, 158, 11, 0.18);
-            color: #fcd34d;
-            border-bottom: 2px solid #f59e0b;
-            padding: 1px 5px;
-            border-radius: 3px;
-            font-family: 'JetBrains Mono', monospace;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-        .link-tag:hover {
-            background: rgba(245, 158, 11, 0.35);
-            color: #ffffff;
-        }
-
-        /* Gauge meter animation */
-        .gauge-meter {
-            transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.4s ease;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-
-        @keyframes pulseSoft {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(0.96); }
-        }
-        .pulse-subtle { animation: pulseSoft 2.5s infinite ease-in-out; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .animate-enter { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-enter { animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     </style>
 </head>
-<body class="h-screen w-screen flex flex-col selection:bg-emerald-500/20 selection:text-emerald-300">
+<body class="min-h-screen flex flex-col items-center selection:bg-emerald-500/20 selection:text-emerald-300">
 
-    <!-- Top App Navigation Bar -->
-    <header class="h-14 bg-[#111622] border-b border-[#232d42] px-4 sm:px-6 flex items-center justify-between flex-shrink-0 z-30">
-        <div class="flex items-center space-x-4">
-            <div class="flex items-center space-x-2.5 cursor-pointer" onclick="setMainMode('inbox')">
-                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                    <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                </div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-sm font-extrabold tracking-tight text-white">PhishShield</span>
-                    <span class="text-[10px] font-mono uppercase bg-slate-800 text-emerald-300 px-1.5 py-0.5 rounded border border-slate-700 font-semibold">Triage Studio</span>
-                </div>
+    <!-- Simple Top Bar -->
+    <header class="w-full max-w-4xl px-6 py-5 flex items-center justify-between border-b border-slate-800/80">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold">
+                🛡️
             </div>
-
-            <div class="hidden sm:block h-4 w-px bg-slate-800"></div>
-
-            <!-- View Switchers -->
-            <div class="hidden md:flex items-center space-x-1 text-xs">
-                <button onclick="setMainMode('inbox')" id="mode-btn-inbox" class="px-3 py-1.5 rounded-lg bg-slate-800 text-white font-medium transition flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    Live Triage Feed
-                </button>
-                <button onclick="setMainMode('inspector')" id="mode-btn-inspector" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
-                    URL & Domain Inspector
-                </button>
-                <button onclick="setMainMode('batch')" id="mode-btn-batch" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
-                    Batch Matrix
-                </button>
-                <button onclick="setMainMode('diagnostics')" id="mode-btn-diagnostics" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                    ML Diagnostics
-                </button>
-            </div>
+            <span class="text-base font-extrabold tracking-tight text-white">PhishShield AI</span>
         </div>
 
-        <!-- Right Side: Threat Engine Status & Actions -->
-        <div class="flex items-center space-x-3">
-            <button onclick="openComposerModal()" title="Hotkey: Press N" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs px-3.5 py-1.5 rounded-lg shadow-sm flex items-center gap-1.5 transition">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                <span>New Threat Scan</span>
-                <kbd class="hidden sm:inline-block bg-emerald-700/50 text-[9px] px-1.5 py-0.5 rounded font-mono font-normal">N</kbd>
-            </button>
-
-            <a href="/docs" target="_blank" class="hidden sm:flex items-center gap-1 text-xs text-slate-400 hover:text-white bg-[#161c2b] border border-[#232d42] px-2.5 py-1.5 rounded-lg transition">
-                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-                <span>Docs</span>
-            </a>
-
-            <div class="flex items-center space-x-2 bg-[#161c2b] border border-[#232d42] px-2.5 py-1.5 rounded-lg">
-                <span id="engine-dot" class="w-2 h-2 rounded-full bg-emerald-400 pulse-subtle"></span>
-                <span id="engine-status" class="text-[11px] font-mono text-slate-300">Engine Online</span>
+        <div class="flex items-center space-x-3 text-xs">
+            <a href="/docs" target="_blank" class="text-slate-400 hover:text-white transition">API Docs</a>
+            <div class="flex items-center space-x-1.5 bg-slate-800/60 border border-slate-700/60 px-2.5 py-1 rounded-full text-[11px] font-mono text-slate-300">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Ready</span>
             </div>
         </div>
     </header>
 
-    <!-- ============================================================= -->
-    <!-- VIEW 1: EMAIL TRIAGE STUDIO & COCKPIT -->
-    <!-- ============================================================= -->
-    <div id="mode-view-inbox" class="flex-1 flex overflow-hidden">
+    <!-- Main Centered Content (Max-Width 760px) -->
+    <main class="w-full max-w-3xl px-4 sm:px-6 py-8 sm:py-12 space-y-8 flex-1">
 
-        <!-- LEFT PANEL: THREAT INBOX & TRIAGE QUEUE (320px) -->
-        <aside class="w-80 sm:w-96 bg-[#111622] border-r border-[#232d42] flex flex-col flex-shrink-0">
-            
-            <!-- Inbox Header / Filters -->
-            <div class="p-3.5 border-b border-[#232d42] space-y-3">
-                <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
-                        Triage Queue
-                    </span>
-                    <span id="inbox-count-badge" class="text-[10px] font-mono bg-[#161c2b] border border-[#232d42] text-slate-300 px-2 py-0.5 rounded-full font-semibold">6 items</span>
+        <!-- Clean Header / Pitch -->
+        <div class="text-center space-y-2">
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                Scan Any Email for Phishing & Fraud
+            </h1>
+            <p class="text-sm text-slate-400 max-w-lg mx-auto leading-relaxed">
+                Powered by Random Forest machine learning and deep URL heuristic analysis to detect brand spoofing, urgency traps, and malicious links.
+            </p>
+        </div>
+
+        <!-- 1-Click Test Scenario Presets -->
+        <div class="space-y-2">
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider text-center">
+                Quick Test Examples:
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-2">
+                <button type="button" onclick="loadSample('bank')" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+                    <span class="text-rose-400 font-bold">&bull;</span> PayPal Spoof
+                </button>
+                <button type="button" onclick="loadSample('giftcard')" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+                    <span class="text-amber-400 font-bold">&bull;</span> Amazon Gift Scam
+                </button>
+                <button type="button" onclick="loadSample('bec_ceo')" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+                    <span class="text-rose-400 font-bold">&bull;</span> CEO Wire Fraud
+                </button>
+                <button type="button" onclick="loadSample('crypto')" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+                    <span class="text-purple-400 font-bold">&bull;</span> Fake ETH Airdrop
+                </button>
+                <button type="button" onclick="loadSample('work')" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+                    <span class="text-emerald-400 font-bold">&bull;</span> Google Sync (Safe)
+                </button>
+                <button type="button" onclick="loadSample('delivery')" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+                    <span class="text-emerald-400 font-bold">&bull;</span> Amazon Order (Safe)
+                </button>
+            </div>
+        </div>
+
+        <!-- Clean Input Box Card -->
+        <div class="clean-card rounded-2xl p-6 sm:p-7 shadow-xl space-y-4">
+            <form id="scan-form" class="space-y-4">
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                            Sender Email
+                        </label>
+                        <input type="email" id="input-sender" placeholder="security-alert@paypal-update-center.net" required
+                               class="w-full bg-[#12161f] border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                            Subject Line
+                        </label>
+                        <input type="text" id="input-subject" placeholder="URGENT: Your Account Has Been Suspended" required
+                               class="w-full bg-[#12161f] border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
                 </div>
 
-                <!-- Category Filters -->
-                <div class="grid grid-cols-3 gap-1 bg-[#0c0f17] p-1 rounded-lg border border-[#232d42] text-[11px] font-medium text-slate-400">
-                    <button onclick="filterQueue('all')" id="filter-all" class="py-1 rounded bg-[#161c2b] text-white font-semibold transition">All (6)</button>
-                    <button onclick="filterQueue('threat')" id="filter-threat" class="py-1 rounded hover:text-white transition">Threats (4)</button>
-                    <button onclick="filterQueue('safe')" id="filter-safe" class="py-1 rounded hover:text-white transition">Clean (2)</button>
-                </div>
-            </div>
-
-            <!-- Email Items List -->
-            <div id="email-queue-list" class="flex-1 overflow-y-auto divide-y divide-[#232d42]/60 p-2 space-y-1">
-                <!-- Dynamically populated via JS -->
-            </div>
-
-            <!-- Bottom Stats / Model Quick Info -->
-            <div class="p-3 border-t border-[#232d42] bg-[#0c0f17]/60 flex items-center justify-between text-[11px] text-slate-400 font-mono">
-                <span>Model: Random Forest (250)</span>
-                <span class="text-emerald-400 font-bold">100% Accuracy</span>
-            </div>
-        </aside>
-
-        <!-- CENTER PANEL: LIVE EMAIL DISSECTION & VISUAL VIEWER -->
-        <main class="flex-1 flex flex-col bg-[#0c0f17] overflow-hidden">
-            
-            <!-- Email Viewer Header Actions -->
-            <div class="h-14 border-b border-[#232d42] bg-[#111622]/60 px-6 flex items-center justify-between flex-shrink-0">
-                <div class="flex items-center space-x-3">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                        <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                        Security Dissection View
-                    </span>
-                    <div class="h-4 w-px bg-slate-800"></div>
-                    <!-- X-Ray Toggle -->
-                    <label class="flex items-center space-x-2 cursor-pointer text-xs select-none">
-                        <input type="checkbox" id="toggle-xray" checked onchange="toggleXRayMode()" class="sr-only peer">
-                        <div class="w-7 h-4 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-600 relative"></div>
-                        <span class="text-slate-300 font-medium peer-checked:text-emerald-400">Threat X-Ray Highlights</span>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                        Email Message Body
                     </label>
+                    <textarea id="input-body" rows="5" placeholder="Paste the email content with links here..." required
+                              class="w-full bg-[#12161f] border border-slate-700 rounded-xl p-3.5 text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 leading-relaxed font-sans"></textarea>
                 </div>
 
-                <!-- Remediation Quick Actions -->
-                <div class="flex items-center space-x-2">
-                    <button onclick="defangLinks()" id="btn-defang" class="text-xs bg-[#161c2b] hover:bg-[#232d42] border border-[#232d42] text-amber-300 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
-                        <span>Defang Links</span>
-                    </button>
-                    <button onclick="copyIncidentReport()" class="text-xs bg-[#161c2b] hover:bg-[#232d42] border border-[#232d42] text-slate-300 hover:text-white px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
-                        <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                        <span>Copy Report</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Email Dissection Canvas (Scrollable) -->
-            <div class="flex-1 overflow-y-auto p-6 space-y-6">
-                
-                <!-- Email Metadata Header Card -->
-                <div class="bg-[#111622] rounded-2xl border border-[#232d42] p-5 sm:p-6 shadow-md space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div class="flex items-start space-x-3.5">
-                            <div id="sender-avatar" class="w-11 h-11 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-base font-extrabold text-white flex-shrink-0">
-                                P
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-2 flex-wrap">
-                                    <h2 id="view-subject" class="text-base sm:text-lg font-bold text-white leading-tight">
-                                        URGENT: Your PayPal Account Has Been Suspended
-                                    </h2>
-                                </div>
-                                <div class="flex items-center gap-2 text-xs text-slate-400 mt-1 flex-wrap font-mono">
-                                    <span>From:</span>
-                                    <span id="view-sender" class="text-slate-200 font-semibold">security-alert@paypal-update-center.net</span>
-                                    <span id="view-sender-chip" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-red-950/60 text-red-300 border border-red-800/50">
-                                        ⚠️ Untrusted Domain
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Date / Security Header Status -->
-                        <div class="text-right text-xs text-slate-500 font-mono flex-shrink-0">
-                            <div>Received: Today, 01:45 AM</div>
-                            <div class="text-emerald-400 font-semibold mt-0.5">TLS 1.3 Encrypted</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Rendered Email Body with Inline X-Ray -->
-                <div class="bg-[#111622] rounded-2xl border border-[#232d42] p-6 sm:p-8 shadow-md">
-                    <div class="text-xs uppercase tracking-wider text-slate-500 font-bold mb-4 pb-2 border-b border-[#232d42]">
-                        Decoded Message Body
-                    </div>
-                    <div id="view-body-content" class="text-sm text-slate-200 leading-relaxed font-sans whitespace-pre-wrap">
-                        <!-- Populated by JavaScript with highlighted tokens -->
-                    </div>
-                </div>
-
-                <!-- Interactive Link Inspector & Payloads Found in Email -->
-                <div id="email-links-inspector" class="bg-[#111622] rounded-2xl border border-[#232d42] p-5 sm:p-6 shadow-md space-y-3">
-                    <div class="flex items-center justify-between">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
-                            Embedded Links & Network Destinations Analysis
-                        </h4>
-                        <span id="link-detected-counter" class="text-[11px] font-mono text-slate-400">1 hyperlink detected</span>
-                    </div>
-                    <div id="email-links-list" class="space-y-2.5">
-                        <!-- Populated dynamically -->
-                    </div>
-                </div>
-
-            </div>
-        </main>
-
-        <!-- RIGHT PANEL: THREAT INTELLIGENCE COCKPIT & RADIAL DIAL (360px) -->
-        <aside class="w-88 sm:w-96 bg-[#111622] border-l border-[#232d42] flex flex-col flex-shrink-0 overflow-y-auto p-5 space-y-5">
-            
-            <div class="flex items-center justify-between pb-3 border-b border-[#232d42]">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Threat Intelligence Index</span>
-                <span id="confidence-level-tag" class="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full uppercase tracking-wider bg-red-950/70 text-red-300 border border-red-800/60">
-                    High Risk Threat
-                </span>
-            </div>
-
-            <!-- Circular Threat Score Dial -->
-            <div class="bg-[#161c2b] rounded-2xl border border-[#232d42] p-5 flex flex-col items-center justify-center space-y-3 shadow-inner">
-                <div class="relative w-36 h-36 flex items-center justify-center">
-                    <svg class="w-36 h-36" viewBox="0 0 100 100">
-                        <!-- Background Circle -->
-                        <circle cx="50" cy="50" r="40" stroke="#232d42" stroke-width="8.5" fill="transparent" />
-                        <!-- Active Stroke -->
-                        <circle id="meter-circle" class="gauge-meter" cx="50" cy="50" r="40" stroke="#f43f5e" stroke-width="8.5" stroke-dasharray="251.2" stroke-dashoffset="50" stroke-linecap="round" fill="transparent" />
-                    </svg>
-                    <div class="absolute flex flex-col items-center justify-center text-center">
-                        <span id="meter-score" class="text-3xl font-extrabold font-mono text-rose-400">86%</span>
-                        <span class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Threat Probability</span>
-                    </div>
-                </div>
-
-                <div class="w-full text-center space-y-0.5">
-                    <h3 id="cockpit-verdict-title" class="text-sm font-bold text-rose-400">Malicious Threat Confirmed</h3>
-                    <p id="cockpit-verdict-desc" class="text-[11px] text-slate-400">High probability of credential theft and domain spoofing.</p>
-                </div>
-            </div>
-
-            <!-- 4-Pillar Vector Scorecard -->
-            <div class="space-y-2">
-                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Threat Vector Scorecard</span>
-                
-                <div class="grid grid-cols-2 gap-2 text-xs">
-                    <div class="bg-[#161c2b] p-3 rounded-xl border border-[#232d42] space-y-1">
-                        <div class="text-[10px] text-slate-400 font-semibold uppercase">Sender Domain</div>
-                        <div id="scorecard-sender" class="font-bold text-rose-400 flex items-center gap-1 font-mono text-xs">
-                            <span>🚨 Spoofed</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-[#161c2b] p-3 rounded-xl border border-[#232d42] space-y-1">
-                        <div class="text-[10px] text-slate-400 font-semibold uppercase">Link Safety</div>
-                        <div id="scorecard-links" class="font-bold text-rose-400 flex items-center gap-1 font-mono text-xs">
-                            <span>⚠️ High Risk</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-[#161c2b] p-3 rounded-xl border border-[#232d42] space-y-1">
-                        <div class="text-[10px] text-slate-400 font-semibold uppercase">Psychology</div>
-                        <div id="scorecard-urgency" class="font-bold text-amber-400 flex items-center gap-1 font-mono text-xs">
-                            <span>⚡ Urgent</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-[#161c2b] p-3 rounded-xl border border-[#232d42] space-y-1">
-                        <div class="text-[10px] text-slate-400 font-semibold uppercase">NLP Classifier</div>
-                        <div id="scorecard-nlp" class="font-bold text-rose-400 flex items-center gap-1 font-mono text-xs">
-                            <span>Random Forest</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Explainable Diagnostic Findings -->
-            <div class="bg-[#161c2b] rounded-2xl border border-[#232d42] p-4 space-y-3">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center justify-between">
-                    <span>Key Forensic Findings</span>
-                    <span id="cockpit-findings-badge" class="text-[10px] font-mono text-slate-500">4 factors</span>
-                </span>
-                <ul id="cockpit-findings-list" class="space-y-2 text-xs">
-                    <!-- Populated dynamically -->
-                </ul>
-            </div>
-
-            <!-- Sensitivity Adjustment -->
-            <div class="bg-[#161c2b] rounded-2xl border border-[#232d42] p-4 space-y-2.5">
-                <div class="flex items-center justify-between text-xs">
-                    <span class="font-semibold text-slate-300">Classification Sensitivity:</span>
-                    <span id="cockpit-thresh-val" class="font-mono font-bold text-emerald-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">0.50</span>
-                </div>
-                <input type="range" id="cockpit-thresh-slider" min="0.1" max="0.9" step="0.05" value="0.5" oninput="adjustSensitivity(this.value)" class="w-full accent-emerald-500 cursor-pointer">
-            </div>
-
-        </aside>
-
-    </div>
-
-
-    <!-- ============================================================= -->
-    <!-- VIEW 2: STANDALONE URL & DOMAIN INSPECTOR -->
-    <!-- ============================================================= -->
-    <div id="mode-view-inspector" class="flex-1 overflow-y-auto p-6 sm:p-10 hidden max-w-6xl mx-auto w-full space-y-6 animate-enter">
-        <div class="bg-[#111622] rounded-2xl border border-[#232d42] p-6 sm:p-8 space-y-6">
-            <div>
-                <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <span>🔗</span> Standalone URL & Domain Security Inspector
-                </h3>
-                <p class="text-xs text-slate-400 mt-1">Directly inspect isolated hyperlinks or sender domains for IP hosting, dangerous TLDs, and brand typosquatting.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- URL Inspector -->
-                <div class="bg-[#161c2b] p-5 rounded-2xl border border-[#232d42] space-y-3.5">
-                    <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider">Inspect URL Link</label>
-                    <input type="text" id="inspector-url-input" placeholder="http://paypal-security-verification.xyz/login"
-                           class="w-full bg-[#0c0f17] border border-[#232d42] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                    <button type="button" onclick="runDirectUrlInspect()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition shadow-sm">
-                        Inspect URL Heuristics
-                    </button>
-                    <div id="inspector-url-result" class="hidden pt-2"></div>
-                </div>
-
-                <!-- Domain Inspector -->
-                <div class="bg-[#161c2b] p-5 rounded-2xl border border-[#232d42] space-y-3.5">
-                    <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider">Inspect Domain / Sender</label>
-                    <input type="text" id="inspector-domain-input" placeholder="support@paypa1-update.com"
-                           class="w-full bg-[#0c0f17] border border-[#232d42] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                    <button type="button" onclick="runDirectDomainInspect()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition shadow-sm">
-                        Check Domain Authenticity
-                    </button>
-                    <div id="inspector-domain-result" class="hidden pt-2"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- ============================================================= -->
-    <!-- VIEW 3: BATCH MATRIX SCANNER -->
-    <!-- ============================================================= -->
-    <div id="mode-view-batch" class="flex-1 overflow-y-auto p-6 sm:p-10 hidden max-w-6xl mx-auto w-full space-y-6 animate-enter">
-        <div class="bg-[#111622] rounded-2xl border border-[#232d42] p-6 sm:p-8 space-y-5">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <div>
-                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                        <span>⚡</span> Batch Email Security Scanner
-                    </h3>
-                    <p class="text-xs text-slate-400 mt-1">Submit multiple emails in JSON format for automated high-speed threat scanning.</p>
-                </div>
-                <button type="button" onclick="loadBatchSampleJson()" class="text-xs bg-[#161c2b] hover:bg-[#232d42] text-emerald-300 px-3 py-1.5 rounded-lg border border-[#232d42] transition font-medium">
-                    Insert Sample Batch JSON
+                <!-- Submit Button -->
+                <button type="submit" id="btn-scan" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-sm transition flex items-center justify-center space-x-2 shadow-lg shadow-emerald-950/40">
+                    <span id="btn-text">Scan for Phishing Threats</span>
+                    <div id="btn-spinner" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin hidden"></div>
                 </button>
-            </div>
-
-            <textarea id="batch-json-input" rows="8" placeholder='[
-  { "sender": "security-alert@paypal-update-center.net", "subject": "Account Locked", "email_text": "Verify at http://paypal-auth.xyz" },
-  { "sender": "alex.chen@google.com", "subject": "Sprint planning sync", "email_text": "Notes from our morning sync attached." }
-]' class="w-full bg-[#0c0f17] border border-[#232d42] rounded-xl p-4 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
-
-            <button type="button" onclick="submitBatchAnalysis()" id="btn-batch-scan" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl transition shadow-md">
-                Run Batch Intelligence Scan
-            </button>
-
-            <div id="batch-results-container" class="hidden space-y-4 pt-3"></div>
-        </div>
-    </div>
-
-
-    <!-- ============================================================= -->
-    <!-- VIEW 4: ML DIAGNOSTICS & METRICS -->
-    <!-- ============================================================= -->
-    <div id="mode-view-diagnostics" class="flex-1 overflow-y-auto p-6 sm:p-10 hidden max-w-6xl mx-auto w-full space-y-6 animate-enter">
-        <div class="bg-[#111622] rounded-2xl border border-[#232d42] p-6 sm:p-8 space-y-6">
-            <div>
-                <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <span>📊</span> Machine Learning Model Specifications
-                </h3>
-                <p class="text-xs text-slate-400 mt-1">Architecture parameters, feature extraction matrix, and cross-validation performance.</p>
-            </div>
-
-            <!-- Stats Counters -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-[#161c2b] p-5 rounded-2xl border border-[#232d42] text-center space-y-1">
-                    <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Test Set Accuracy</span>
-                    <div class="text-3xl font-extrabold font-mono text-emerald-400">100.0%</div>
-                    <p class="text-[11px] text-slate-500">Holdout evaluation split</p>
-                </div>
-                <div class="bg-[#161c2b] p-5 rounded-2xl border border-[#232d42] text-center space-y-1">
-                    <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">5-Fold Stratified CV</span>
-                    <div class="text-3xl font-extrabold font-mono text-teal-300">94.3%</div>
-                    <p class="text-[11px] text-slate-500">Mean F1-Score: 93.3%</p>
-                </div>
-                <div class="bg-[#161c2b] p-5 rounded-2xl border border-[#232d42] text-center space-y-1">
-                    <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Ensemble Trees</span>
-                    <div class="text-3xl font-extrabold font-mono text-purple-300">250 Trees</div>
-                    <p class="text-[11px] text-slate-500">Balanced Random Forest</p>
-                </div>
-            </div>
-
-            <!-- Pipeline Breakdown -->
-            <div class="bg-[#161c2b] p-5 rounded-2xl border border-[#232d42] space-y-4">
-                <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Dual-Engine Pipeline Breakdown</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                    <div class="p-4 bg-[#111622] rounded-xl border border-[#232d42] space-y-1.5">
-                        <div class="font-bold text-emerald-400">1. Sublinear TF-IDF N-grams</div>
-                        <p class="text-slate-400">Unigrams and bigrams with sublinear term-frequency scaling and English stopword pruning up to 3,000 vocabulary dimensions.</p>
-                    </div>
-                    <div class="p-4 bg-[#111622] rounded-xl border border-[#232d42] space-y-1.5">
-                        <div class="font-bold text-emerald-400">2. Heuristic Signal Matrix</div>
-                        <p class="text-slate-400">15 structural signals: URL counts, raw IP hosting, high-risk TLDs, URL shorteners, domain entropy, typosquatting checks, and urgency densities.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- ============================================================= -->
-    <!-- MODAL: CUSTOM EMAIL ANALYZER / RAW EML INGESTION -->
-    <!-- ============================================================= -->
-    <div id="composer-modal" onclick="handleModalBackdropClick(event)" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-[#111622] border border-[#232d42] w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden animate-enter space-y-5 p-6 sm:p-8" onclick="event.stopPropagation()">
-            
-            <div class="flex items-center justify-between pb-3 border-b border-[#232d42]">
-                <div class="flex items-center space-x-2.5">
-                    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                    </div>
-                    <div>
-                        <h3 class="text-base font-bold text-white">Analyze Custom Email Payload</h3>
-                        <p class="text-xs text-slate-400">Input sender headers, subject line, and raw body to run real-time ML inference.</p>
-                    </div>
-                </div>
-                <button onclick="closeComposerModal()" class="text-slate-400 hover:text-white p-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            </div>
-
-            <form id="custom-scan-form" class="space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Sender Email</label>
-                        <input type="email" id="custom-sender" placeholder="support@bank-security.com" required
-                               class="w-full bg-[#161c2b] border border-[#232d42] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Subject Header</label>
-                        <input type="text" id="custom-subject" placeholder="Urgent: Account Verification" required
-                               class="w-full bg-[#161c2b] border border-[#232d42] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Email Body & Raw Links</label>
-                    <textarea id="custom-body" rows="6" placeholder="Paste full email body content..." required
-                              class="w-full bg-[#161c2b] border border-[#232d42] rounded-xl p-4 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-y font-sans"></textarea>
-                </div>
-
-                <div class="flex items-center justify-end gap-3 pt-2">
-                    <button type="button" onclick="closeComposerModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl text-xs font-semibold transition">
-                        Cancel
-                    </button>
-                    <button type="submit" id="btn-modal-scan" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition flex items-center gap-2 shadow-lg shadow-emerald-900/20">
-                        <span id="btn-modal-scan-text">Execute Security Triage</span>
-                        <div id="btn-modal-loader" class="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin hidden"></div>
-                    </button>
-                </div>
             </form>
+        </div>
+
+        <!-- Result Box (Hidden until scanned) -->
+        <div id="result-container" class="hidden clean-card rounded-2xl p-6 sm:p-7 shadow-xl space-y-5 animate-enter">
+            
+            <!-- Big Banner -->
+            <div id="banner-box" class="p-4 rounded-xl border flex items-center justify-between">
+                <div class="space-y-0.5">
+                    <div id="banner-title" class="text-base sm:text-lg font-bold">--</div>
+                    <div id="banner-desc" class="text-xs text-slate-300">--</div>
+                </div>
+                <div class="text-right">
+                    <div id="score-text" class="text-2xl sm:text-3xl font-extrabold font-mono">0%</div>
+                    <div class="text-[10px] uppercase font-bold text-slate-400">Risk Score</div>
+                </div>
+            </div>
+
+            <!-- Key Findings List -->
+            <div class="space-y-2">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Why was this result generated?</h3>
+                <ul id="reasons-list" class="space-y-1.5 text-xs text-slate-200"></ul>
+            </div>
+
+            <!-- Detected Links Breakdown -->
+            <div id="links-box" class="hidden space-y-2 pt-2 border-t border-slate-700/60">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Embedded Hyperlinks</h3>
+                <div id="links-list" class="space-y-2"></div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-3 pt-2">
+                <button type="button" onclick="copyReport()" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold border border-slate-700 transition flex items-center justify-center gap-1.5">
+                    <span>📋</span> Copy Security Report
+                </button>
+                <button type="button" onclick="defangText()" id="btn-defang" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded-xl text-xs font-semibold border border-slate-700 transition flex items-center justify-center gap-1.5">
+                    <span>🛡️</span> Defang Links
+                </button>
+            </div>
 
         </div>
-    </div>
 
+    </main>
 
-    <!-- Global Toast Feedback -->
-    <div id="studio-toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-[#161c2b] border border-[#232d42] text-white text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2">
+    <!-- Simple Footer -->
+    <footer class="py-6 text-center text-xs text-slate-500">
+        PhishShield AI &bull; Production Machine Learning Security Engine
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-800 border border-slate-700 text-white text-xs px-4 py-3 rounded-xl shadow-xl flex items-center gap-2">
         <span id="toast-icon">✅</span>
-        <span id="toast-msg">Notification message</span>
+        <span id="toast-msg">Copied!</span>
     </div>
 
-
-    <!-- Interactive Studio Controller -->
+    <!-- Frontend Script -->
     <script>
         const API_BASE = 'http://127.0.0.1:8000';
-        let currentQueue = [];
-        let activeEmailIndex = 0;
-        let activeAnalysisResult = null;
-        let isDefanged = false;
-        let currentFilter = 'all';
+        let sampleData = null;
+        let lastResult = null;
 
-        // Preloaded In-Memory Email Triage Database
-        const defaultInboxItems = [
-            {
-                id: 'email-1',
-                sender: 'security-alert@paypal-update-center.net',
-                subject: 'URGENT: Your PayPal Account Has Been Suspended',
-                body: 'Dear customer, our automated fraud systems detected unauthorized access attempts from Moscow, Russia. Your account funds have been frozen temporarily.\n\nPlease visit http://paypal-security-verification.net/login immediately to verify your identity and restore account standing.',
-                time: '01:45 AM',
-                label: 'Phishing',
-                probability: 0.86,
-                isThreat: true,
-                avatar: 'P'
-            },
-            {
-                id: 'email-2',
-                sender: 'rewards@amazon-giftcard-promotions.xyz',
-                subject: 'Congratulations! You won a $1,000 Amazon Gift Card',
-                body: 'Lucky Winner! You have been selected for our quarterly $1,000 shopping spree reward.\n\nClick http://bit.ly/3xAmazonClaim right now and input your postal and credit card details to claim your free reward voucher before it expires.',
-                time: '01:30 AM',
-                label: 'Phishing',
-                probability: 0.92,
-                isThreat: true,
-                avatar: 'A'
-            },
-            {
-                id: 'email-3',
-                sender: 'ceo.office@executive-corp-urgent.com',
-                subject: 'URGENT & CONFIDENTIAL: Wire Transfer Needed Today',
-                body: 'I am currently in an executive partner meeting and cannot take phone calls.\n\nPlease immediately process a domestic wire transfer of $18,400 to our strategic partner account. Email me the confirmation receipt once done.',
-                time: 'Yesterday',
-                label: 'Phishing',
-                probability: 0.78,
-                isThreat: true,
-                avatar: 'C'
-            },
-            {
-                id: 'email-4',
-                sender: 'crypto-airdrop@binance-reward-vault.top',
-                subject: 'Exclusive Binance 2.0 ETH Airdrop for Active Users',
-                body: 'Claim your free 2.0 Ethereum airdrop reward! Connect your decentralized Web3 wallet at http://binance-airdrop-claim.top/connect immediately before the allocation period closes.',
-                time: 'Yesterday',
-                label: 'Phishing',
-                probability: 0.89,
-                isThreat: true,
-                avatar: 'B'
-            },
-            {
-                id: 'email-5',
-                sender: 'alex.chen@google.com',
-                subject: 'Notes from today\'s sprint planning & roadmap sync',
-                body: 'Hi team, attached are the action items from our sync this morning.\n\nWe decided to prioritize the latency improvements and automated feature pipelines for Q3. Let me know if you have any feedback before tomorrow\'s standup!',
-                time: '2 days ago',
-                label: 'Safe',
-                probability: 0.05,
-                isThreat: false,
-                avatar: 'G'
-            },
-            {
-                id: 'email-6',
-                sender: 'auto-confirm@amazon.com',
-                subject: 'Your Amazon.com order #114-8921471 has shipped',
-                body: 'Great news! Your package containing USB-C Cables is on its way and scheduled to arrive tomorrow by 8:00 PM.\n\nYou can track your package progress in your Amazon account dashboard.',
-                time: '3 days ago',
-                label: 'Safe',
-                probability: 0.08,
-                isThreat: false,
-                avatar: 'A'
-            }
-        ];
-
-        currentQueue = [...defaultInboxItems];
-
-        // Toast feedback
         function showToast(msg, icon = '✅') {
-            const toast = document.getElementById('studio-toast');
+            const toast = document.getElementById('toast');
             document.getElementById('toast-msg').textContent = msg;
             document.getElementById('toast-icon').textContent = icon;
             toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 2500);
         }
 
-        // View Mode Switcher
-        function setMainMode(modeId) {
-            ['inbox', 'inspector', 'batch', 'diagnostics'].forEach(m => {
-                const view = document.getElementById(`mode-view-${m}`);
-                const btn = document.getElementById(`mode-btn-${m}`);
-                if (m === modeId) {
-                    if (view) view.classList.remove('hidden');
-                    if (btn) btn.className = 'px-3 py-1.5 rounded-lg bg-slate-800 text-white font-medium transition flex items-center gap-1.5';
-                } else {
-                    if (view) view.classList.add('hidden');
-                    if (btn) btn.className = 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5';
-                }
-            });
+        // Fetch presets on load
+        async function fetchSamples() {
+            try {
+                const res = await fetch(`${API_BASE}/samples`);
+                if (res.ok) sampleData = await res.json();
+            } catch(e) {}
+        }
+        fetchSamples();
+
+        function loadSample(key) {
+            if (!sampleData || !sampleData[key]) return;
+            const item = sampleData[key];
+            document.getElementById('input-sender').value = item.sender;
+            document.getElementById('input-subject').value = item.subject;
+            document.getElementById('input-body').value = item.body;
+            showToast(`Loaded "${key.toUpperCase()}" sample`);
+            
+            // Auto submit scan
+            document.getElementById('scan-form').dispatchEvent(new Event('submit'));
         }
 
-        // Render Triage Queue
-        function renderQueue() {
-            const list = document.getElementById('email-queue-list');
-            const items = currentQueue.filter(item => {
-                if (currentFilter === 'threat') return item.isThreat;
-                if (currentFilter === 'safe') return !item.isThreat;
-                return true;
-            });
+        // Handle Scan Form Submit
+        document.getElementById('scan-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const sender = document.getElementById('input-sender').value.trim();
+            const subject = document.getElementById('input-subject').value.trim();
+            const email_text = document.getElementById('input-body').value.trim();
 
-            document.getElementById('inbox-count-badge').textContent = `${items.length} items`;
+            const btnText = document.getElementById('btn-text');
+            const spinner = document.getElementById('btn-spinner');
+            const btn = document.getElementById('btn-scan');
 
-            list.innerHTML = items.map((item) => {
-                const isSelected = (item === currentQueue[activeEmailIndex]);
-                const badgeColor = item.isThreat ? 'bg-red-950/70 text-red-300 border-red-800/40' : 'bg-emerald-950/70 text-emerald-300 border-emerald-800/40';
-                
-                return `
-                    <div onclick="selectEmailById('${item.id}')" 
-                         class="p-3 rounded-xl border transition cursor-pointer text-xs space-y-1.5 ${isSelected ? 'bg-[#1c2436] border-emerald-500/50 shadow-sm' : 'bg-[#161c2b]/80 border-[#232d42] hover:bg-[#1c2436]/60'}">
-                        <div class="flex items-center justify-between">
-                            <span class="font-bold text-white truncate max-w-[170px]">${item.sender.split('@')[0]}</span>
-                            <span class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded border ${badgeColor}">
-                                ${item.label === 'Phishing' ? `${Math.round(item.probability*100)}% Threat` : 'Safe'}
-                            </span>
-                        </div>
-                        <div class="font-semibold text-slate-200 truncate text-[11px]">${item.subject}</div>
-                        <div class="text-slate-400 text-[10px] truncate leading-tight">${item.body.replace(/\n/g, ' ')}</div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function filterQueue(type) {
-            currentFilter = type;
-            ['all', 'threat', 'safe'].forEach(f => {
-                const btn = document.getElementById(`filter-${f}`);
-                if (f === type) {
-                    btn.className = 'py-1 rounded bg-[#161c2b] text-white font-semibold transition';
-                } else {
-                    btn.className = 'py-1 rounded hover:text-white transition';
-                }
-            });
-            renderQueue();
-        }
-
-        function selectEmailById(id) {
-            const idx = currentQueue.findIndex(i => i.id === id);
-            if (idx !== -1) {
-                activeEmailIndex = idx;
-                isDefanged = false;
-                resetDefangButton();
-                renderQueue();
-                runLiveEmailScan(currentQueue[idx]);
-            }
-        }
-
-        function resetDefangButton() {
-            const btn = document.getElementById('btn-defang');
-            btn.className = 'text-xs bg-[#161c2b] hover:bg-[#232d42] border border-[#232d42] text-amber-300 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5';
-        }
-
-        // Live ML Scan & Analysis
-        async function runLiveEmailScan(emailObj) {
-            const threshold = parseFloat(document.getElementById('cockpit-thresh-slider').value);
+            btnText.textContent = 'Analyzing...';
+            spinner.classList.remove('hidden');
+            btn.disabled = true;
 
             try {
                 const res = await fetch(`${API_BASE}/predict`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        sender: emailObj.sender,
-                        subject: emailObj.subject,
-                        email_text: emailObj.body,
-                        threshold: threshold
-                    })
+                    body: JSON.stringify({ sender, subject, email_text, threshold: 0.5 })
                 });
 
-                if (res.ok) {
-                    const data = await res.json();
-                    activeAnalysisResult = data;
-                    updateCockpitView(emailObj, data);
-                }
-            } catch (err) {
-                console.error('Scan error:', err);
-            }
-        }
+                if (!res.ok) throw new Error('API Error');
 
-        // Update Center Dissection & Right Cockpit
-        function updateCockpitView(emailObj, data) {
+                const data = await res.json();
+                lastResult = data;
+                renderResult(data);
+                showToast('Scan complete!');
+            } catch (err) {
+                showToast('Failed to scan email', '⚠️');
+            } finally {
+                btnText.textContent = 'Scan for Phishing Threats';
+                spinner.classList.add('hidden');
+                btn.disabled = false;
+            }
+        });
+
+        function renderResult(data) {
+            const container = document.getElementById('result-container');
+            container.classList.remove('hidden');
+
             const isPhish = data.label.toLowerCase() === 'phishing';
             const pct = Math.round(data.probability * 100);
 
-            // Update Header Meta
-            document.getElementById('view-subject').textContent = emailObj.subject;
-            document.getElementById('view-sender').textContent = emailObj.sender;
-            document.getElementById('sender-avatar').textContent = emailObj.avatar || emailObj.sender[0].toUpperCase();
+            const bannerBox = document.getElementById('banner-box');
+            const bannerTitle = document.getElementById('banner-title');
+            const bannerDesc = document.getElementById('banner-desc');
+            const scoreText = document.getElementById('score-text');
 
-            // Sender Chip
-            const senderChip = document.getElementById('view-sender-chip');
-            if (data.sender_analysis?.is_trusted) {
-                senderChip.textContent = '✅ Verified Enterprise Brand';
-                senderChip.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/60 text-emerald-300 border border-emerald-800/50';
-            } else if (data.sender_analysis?.typosquatting_detected) {
-                senderChip.textContent = `🚨 Typosquatting (Impersonating ${data.sender_analysis.impersonated_brand})`;
-                senderChip.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-red-950/60 text-red-300 border border-red-800/50';
-            } else {
-                senderChip.textContent = `⚠️ Untrusted Domain (@${data.sender_analysis?.domain || 'unknown'})`;
-                senderChip.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-950/60 text-amber-300 border border-amber-800/50';
-            }
-
-            // Render Body with X-Ray highlights
-            renderBodyWithXRay(emailObj.body);
-
-            // Links Inspector List
-            const linksList = document.getElementById('email-links-list');
-            const counter = document.getElementById('link-detected-counter');
-            const urls = data.urls_inspected || [];
-            counter.textContent = `${urls.length} link(s) found`;
-
-            if (urls.length > 0) {
-                linksList.innerHTML = urls.map(u => `
-                    <div class="p-3 bg-[#161c2b] rounded-xl border ${u.risk_score > 30 ? 'border-rose-500/50' : 'border-[#232d42]'} text-xs space-y-1.5">
-                        <div class="flex items-center justify-between">
-                            <span class="font-mono text-slate-200 truncate max-w-sm">${u.url}</span>
-                            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold ${u.risk_score > 30 ? 'bg-red-950/70 text-red-300' : 'bg-emerald-950/70 text-emerald-300'}">Threat ${u.risk_score}%</span>
-                        </div>
-                        ${u.issues.length ? `<div class="text-rose-300 text-[11px] font-mono">${u.issues.join(' &bull; ')}</div>` : '<div class="text-emerald-400 text-[11px]">No malicious link signatures detected</div>'}
-                    </div>
-                `).join('');
-            } else {
-                linksList.innerHTML = '<div class="text-xs text-slate-500 font-mono p-2">No hyperlinks embedded in this email message.</div>';
-            }
-
-            // Update Right Cockpit Dial
-            const meter = document.getElementById('meter-circle');
-            const scoreText = document.getElementById('meter-score');
-            const circumference = 2 * Math.PI * 40; // 251.2
-            const offset = circumference - (pct / 100) * circumference;
-
-            meter.style.strokeDashoffset = offset;
-            meter.style.stroke = isPhish ? (pct > 75 ? '#f43f5e' : '#fbbf24') : '#10b981';
             scoreText.textContent = `${pct}%`;
-            scoreText.className = `text-3xl font-extrabold font-mono ${isPhish ? 'text-rose-400' : 'text-emerald-400'}`;
-
-            // Title & Descriptions
-            const vTitle = document.getElementById('cockpit-verdict-title');
-            const vDesc = document.getElementById('cockpit-verdict-desc');
-            const vBadge = document.getElementById('confidence-level-tag');
 
             if (isPhish) {
-                vTitle.textContent = 'Malicious Threat Confirmed';
-                vTitle.className = 'text-sm font-bold text-rose-400';
-                vDesc.textContent = 'High probability of credential theft, urgency pressure, or domain spoofing.';
-                vBadge.textContent = `${data.risk_level} Risk (${data.label})`;
-                vBadge.className = 'text-[10px] font-mono font-bold px-2.5 py-1 rounded-full uppercase tracking-wider bg-red-950/70 text-red-300 border border-red-800/60';
+                bannerBox.className = 'p-4 rounded-xl border bg-rose-950/40 border-rose-800/60 text-rose-200 flex items-center justify-between';
+                bannerTitle.textContent = '🚨 Phishing Attack Detected';
+                bannerTitle.className = 'text-base sm:text-lg font-bold text-rose-300';
+                bannerDesc.textContent = `High risk of credential theft or brand impersonation (${data.risk_level} Risk)`;
+                scoreText.className = 'text-2xl sm:text-3xl font-extrabold font-mono text-rose-400';
             } else {
-                vTitle.textContent = 'Authentic Communication';
-                vTitle.className = 'text-sm font-bold text-emerald-400';
-                vDesc.textContent = 'Verified sender domain and standard conversational language patterns.';
-                vBadge.textContent = `${data.risk_level} Risk (Safe)`;
-                vBadge.className = 'text-[10px] font-mono font-bold px-2.5 py-1 rounded-full uppercase tracking-wider bg-emerald-950/70 text-emerald-300 border border-emerald-800/60';
+                bannerBox.className = 'p-4 rounded-xl border bg-emerald-950/40 border-emerald-800/60 text-emerald-200 flex items-center justify-between';
+                bannerTitle.textContent = '✅ Safe & Legitimate Email';
+                bannerTitle.className = 'text-base sm:text-lg font-bold text-emerald-300';
+                bannerDesc.textContent = `Sender domain is authentic and content matches safe patterns (${data.risk_level} Risk)`;
+                scoreText.className = 'text-2xl sm:text-3xl font-extrabold font-mono text-emerald-400';
             }
 
-            // Scorecard
-            document.getElementById('scorecard-sender').innerHTML = data.sender_analysis?.is_trusted ? '<span class="text-emerald-400">Verified</span>' : '<span class="text-rose-400">Untrusted</span>';
-            document.getElementById('scorecard-links').innerHTML = (urls.some(u => u.risk_score > 30)) ? '<span class="text-rose-400">Suspicious</span>' : '<span class="text-emerald-400">Clean</span>';
-            document.getElementById('scorecard-urgency').innerHTML = isPhish ? '<span class="text-amber-400">High Urgency</span>' : '<span class="text-emerald-400">Neutral</span>';
-
-            // Forensic findings
-            const fList = document.getElementById('cockpit-findings-list');
-            document.getElementById('cockpit-findings-badge').textContent = `${data.reasons.length} factors`;
-            fList.innerHTML = data.reasons.map(r => `
-                <li class="flex items-start gap-2 p-2 rounded-lg bg-[#111622] border border-[#232d42] text-slate-300 text-xs">
-                    <span class="${isPhish ? 'text-rose-400' : 'text-emerald-400'} font-bold mt-0.5">&bull;</span>
+            // Reasons List
+            const reasonsList = document.getElementById('reasons-list');
+            reasonsList.innerHTML = data.reasons.map(r => `
+                <li class="flex items-start gap-2 p-2 rounded-lg bg-[#12161f] border border-slate-800">
+                    <span class="${isPhish ? 'text-rose-400' : 'text-emerald-400'} font-bold">&bull;</span>
                     <span>${r}</span>
                 </li>
             `).join('');
-        }
 
-        // X-Ray Text Highlighting
-        function renderBodyWithXRay(rawText) {
-            const bodyEl = document.getElementById('view-body-content');
-            const xrayActive = document.getElementById('toggle-xray').checked;
+            // Links List
+            const linksBox = document.getElementById('links-box');
+            const linksList = document.getElementById('links-list');
+            const urls = data.urls_inspected || [];
 
-            if (!xrayActive || isDefanged) {
-                bodyEl.textContent = isDefanged ? defangTextContent(rawText) : rawText;
-                return;
-            }
-
-            let rendered = rawText;
-
-            // Highlight URLs
-            rendered = rendered.replace(/(https?:\/\/[^\s"'>]+)/gi, (match) => {
-                return `<span class="link-tag" onclick="inspectSpecificLink('${match}')" title="Click to inspect hyperlink: ${match}">${match}</span>`;
-            });
-
-            // Highlight suspicious keywords
-            const suspiciousWords = [
-                'urgent', 'immediately', 'suspended', 'locked', 'verify', 'password',
-                'identity', 'fraud', 'unauthorized', 'wire transfer', 'claim', 'winner',
-                '$1,000', 'gift card', 'airdrop', 'wallet', 'confirmation'
-            ];
-
-            suspiciousWords.forEach(w => {
-                const regex = new RegExp(`\\b(${w})\\b`, 'gi');
-                rendered = rendered.replace(regex, `<span class="threat-tag" title="Forensic Trigger: Coercive / Credential Keyword">$1</span>`);
-            });
-
-            bodyEl.innerHTML = rendered;
-        }
-
-        function inspectSpecificLink(linkUrl) {
-            setMainMode('inspector');
-            document.getElementById('inspector-url-input').value = linkUrl;
-            runDirectUrlInspect();
-            showToast('Loaded hyperlink into Inspector');
-        }
-
-        function toggleXRayMode() {
-            if (currentQueue[activeEmailIndex]) {
-                renderBodyWithXRay(currentQueue[activeEmailIndex].body);
-            }
-        }
-
-        function defangTextContent(text) {
-            return text.replace(/https?:\/\//gi, 'hxxp://')
-                       .replace(/\.([a-z]{2,})/gi, '[.]$1');
-        }
-
-        function defangLinks() {
-            isDefanged = !isDefanged;
-            const btn = document.getElementById('btn-defang');
-            if (isDefanged) {
-                btn.className = 'text-xs bg-amber-500/20 border border-amber-500/50 text-amber-300 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 font-bold';
-                showToast('Defanged all URLs in active email!', '🛡️');
+            if (urls.length > 0) {
+                linksBox.classList.remove('hidden');
+                linksList.innerHTML = urls.map(u => `
+                    <div class="p-3 bg-[#12161f] rounded-xl border ${u.risk_score > 30 ? 'border-rose-900/60' : 'border-slate-800'} text-xs space-y-1">
+                        <div class="flex items-center justify-between font-mono">
+                            <span class="text-slate-300 truncate max-w-sm">${u.url}</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${u.risk_score > 30 ? 'bg-rose-950 text-rose-300 border border-rose-800' : 'bg-emerald-950 text-emerald-300 border border-emerald-800'}">${u.risk_score}% Risk</span>
+                        </div>
+                        ${u.issues.length ? `<div class="text-rose-400 text-[11px]">${u.issues.join(' &bull; ')}</div>` : '<div class="text-emerald-400 text-[11px]">No malicious signatures found</div>'}
+                    </div>
+                `).join('');
             } else {
-                btn.className = 'text-xs bg-[#161c2b] hover:bg-[#232d42] border border-[#232d42] text-amber-300 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5';
-                showToast('Restored raw links view');
+                linksBox.classList.add('hidden');
             }
-            renderBodyWithXRay(currentQueue[activeEmailIndex].body);
+
+            // Scroll result into view
+            container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        function copyIncidentReport() {
-            if (!activeAnalysisResult || !currentQueue[activeEmailIndex]) return;
-            const email = currentQueue[activeEmailIndex];
-            const rep = `### [PhishShield SOC Security Incident Report]\n` +
-                        `- **Target Subject**: ${email.subject}\n` +
-                        `- **Sender Address**: ${email.sender}\n` +
-                        `- **Verdict**: ${activeAnalysisResult.label.toUpperCase()} (${activeAnalysisResult.risk_level} Risk Tier)\n` +
-                        `- **Confidence**: ${(activeAnalysisResult.probability * 100).toFixed(1)}%\n` +
-                        `- **Forensic Factors**:\n${activeAnalysisResult.reasons.map(r => `  * ${r}`).join('\n')}\n` +
-                        `- **Timestamp**: ${new Date().toISOString()}`;
+        function copyReport() {
+            if (!lastResult) return;
+            const sender = document.getElementById('input-sender').value;
+            const subject = document.getElementById('input-subject').value;
+            const rep = `### PhishShield Threat Incident Report\n` +
+                        `- **Verdict**: ${lastResult.label} (${lastResult.risk_level} Risk)\n` +
+                        `- **Confidence**: ${(lastResult.probability * 100).toFixed(1)}%\n` +
+                        `- **Sender**: ${sender}\n` +
+                        `- **Subject**: ${subject}\n` +
+                        `- **Findings**:\n${lastResult.reasons.map(r => `  * ${r}`).join('\n')}`;
             navigator.clipboard.writeText(rep);
-            showToast('SOC Security Incident Report copied!');
+            showToast('Security report copied to clipboard!');
         }
 
-        function adjustSensitivity(val) {
-            document.getElementById('cockpit-thresh-val').textContent = parseFloat(val).toFixed(2);
-            if (currentQueue[activeEmailIndex]) {
-                runLiveEmailScan(currentQueue[activeEmailIndex]);
-            }
+        function defangText() {
+            const bodyEl = document.getElementById('input-body');
+            bodyEl.value = bodyEl.value
+                .replace(/https?:\/\//gi, 'hxxp://')
+                .replace(/\.([a-z]{2,})/gi, '[.]$1');
+            showToast('All URLs defanged into safe text!');
         }
-
-        // Direct URL / Domain Inspectors
-        async function runDirectUrlInspect() {
-            const url = document.getElementById('inspector-url-input').value.trim();
-            if (!url) return;
-            const box = document.getElementById('inspector-url-result');
-            box.classList.remove('hidden');
-            box.innerHTML = '<span class="text-xs text-slate-400 font-mono">Inspecting URL structure...</span>';
-            try {
-                const res = await fetch(`${API_BASE}/analyze/url`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url })
-                });
-                const d = await res.json();
-                box.innerHTML = `
-                    <div class="p-3 bg-[#0c0f17] rounded-xl border ${d.risk_score > 30 ? 'border-rose-500/50' : 'border-[#232d42]'} text-xs space-y-1">
-                        <div class="flex justify-between font-bold">
-                            <span>Threat Score: ${d.risk_score}%</span>
-                            <span class="${d.risk_score > 30 ? 'text-rose-400' : 'text-emerald-400'}">${d.risk_score > 30 ? 'High Risk' : 'Low Risk'}</span>
-                        </div>
-                        <div class="text-slate-400 mt-1">${d.issues.length ? d.issues.map(i => `&bull; ${i}`).join('<br>') : 'Clean URL structure.'}</div>
-                    </div>
-                `;
-            } catch (e) {
-                box.innerHTML = `<span class="text-xs text-rose-400">Error: ${e.message}</span>`;
-            }
-        }
-
-        async function runDirectDomainInspect() {
-            const domain_or_email = document.getElementById('inspector-domain-input').value.trim();
-            if (!domain_or_email) return;
-            const box = document.getElementById('inspector-domain-result');
-            box.classList.remove('hidden');
-            box.innerHTML = '<span class="text-xs text-slate-400 font-mono">Checking domain reputation...</span>';
-            try {
-                const res = await fetch(`${API_BASE}/analyze/domain`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ domain_or_email })
-                });
-                const d = await res.json();
-                box.innerHTML = `
-                    <div class="p-3 bg-[#0c0f17] rounded-xl border ${d.is_trusted ? 'border-emerald-500/50' : (d.typosquatting_detected ? 'border-rose-500/50' : 'border-[#232d42]')} text-xs space-y-1">
-                        <div class="flex justify-between font-bold">
-                            <span>Domain: @${d.domain}</span>
-                            <span class="${d.is_trusted ? 'text-emerald-400' : (d.typosquatting_detected ? 'text-rose-400' : 'text-amber-400')}">${d.risk_level} Risk</span>
-                        </div>
-                        <div class="text-slate-400 text-[11px] mt-1">
-                            Verified Brand: ${d.is_trusted ? 'Yes' : 'No'} &bull; Domain Entropy: ${d.entropy}<br>
-                            ${d.typosquatting_detected ? `🚨 Typosquatting: Impersonating ${d.impersonated_brand}` : 'No brand typosquatting flags.'}
-                        </div>
-                    </div>
-                `;
-            } catch (e) {
-                box.innerHTML = `<span class="text-xs text-rose-400">Error: ${e.message}</span>`;
-            }
-        }
-
-        // Batch Scanner
-        function loadBatchSampleJson() {
-            document.getElementById('batch-json-input').value = JSON.stringify([
-                { "sender": "security-alert@paypal-update-center.net", "subject": "Account Locked", "email_text": "Verify your identity at http://paypal-auth.xyz immediately." },
-                { "sender": "alex.chen@google.com", "subject": "Sprint planning notes", "email_text": "Hi team, here are the action items from our sync." },
-                { "sender": "rewards@amazon-giftcard-promotions.xyz", "subject": "Claim your $1,000 Voucher", "email_text": "Claim reward at http://bit.ly/3xAmazonClaim now." }
-            ], null, 2);
-        }
-
-        async function submitBatchAnalysis() {
-            const raw = document.getElementById('batch-json-input').value.trim();
-            if (!raw) return;
-            const resBox = document.getElementById('batch-results-container');
-            resBox.classList.remove('hidden');
-            resBox.innerHTML = '<span class="text-xs text-slate-400 font-mono">Running bulk intelligence analysis...</span>';
-            try {
-                const emails = JSON.parse(raw);
-                const res = await fetch(`${API_BASE}/predict/batch`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ emails })
-                });
-                const list = await res.json();
-                resBox.innerHTML = `
-                    <div class="overflow-x-auto rounded-xl border border-[#232d42]">
-                        <table class="w-full text-left text-xs">
-                            <thead class="bg-[#0c0f17] text-slate-400 uppercase font-semibold text-[10px]">
-                                <tr>
-                                    <th class="p-3">#</th>
-                                    <th class="p-3">Verdict</th>
-                                    <th class="p-3">Score</th>
-                                    <th class="p-3">Risk</th>
-                                    <th class="p-3">Primary Diagnostic</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-[#232d42] bg-[#161c2b] font-mono">
-                                ${list.map((r, i) => `
-                                    <tr>
-                                        <td class="p-3 text-slate-500">${i+1}</td>
-                                        <td class="p-3 font-bold ${r.label === 'Phishing' ? 'text-rose-400' : 'text-emerald-400'}">${r.label}</td>
-                                        <td class="p-3 text-white">${(r.probability*100).toFixed(1)}%</td>
-                                        <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold ${r.risk_level === 'High' ? 'bg-red-950/70 text-red-300' : (r.risk_level === 'Medium' ? 'bg-amber-950/70 text-amber-300' : 'bg-emerald-950/70 text-emerald-300')}">${r.risk_level}</span></td>
-                                        <td class="p-3 font-sans text-slate-300 truncate max-w-xs">${r.reasons[0] || 'Clean'}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            } catch (e) {
-                resBox.innerHTML = `<span class="text-xs text-rose-400">Batch Error: ${e.message}</span>`;
-            }
-        }
-
-        // Modal Composer & Keyboard Shortcuts
-        function openComposerModal() {
-            document.getElementById('composer-modal').classList.remove('hidden');
-            document.getElementById('custom-sender').focus();
-        }
-        function closeComposerModal() {
-            document.getElementById('composer-modal').classList.add('hidden');
-        }
-        function handleModalBackdropClick(e) {
-            if (e.target.id === 'composer-modal') closeComposerModal();
-        }
-
-        // Global hotkeys (N for new scan, Esc to close modal, Up/Down for queue navigation)
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeComposerModal();
-            }
-            if ((e.key === 'n' || e.key === 'N') && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
-                e.preventDefault();
-                openComposerModal();
-            }
-            if (['j', 'ArrowDown'].includes(e.key) && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
-                if (activeEmailIndex < currentQueue.length - 1) {
-                    selectEmailById(currentQueue[activeEmailIndex + 1].id);
-                }
-            }
-            if (['k', 'ArrowUp'].includes(e.key) && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
-                if (activeEmailIndex > 0) {
-                    selectEmailById(currentQueue[activeEmailIndex - 1].id);
-                }
-            }
-        });
-
-        document.getElementById('custom-scan-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const sender = document.getElementById('custom-sender').value.trim();
-            const subject = document.getElementById('custom-subject').value.trim();
-            const body = document.getElementById('custom-body').value.trim();
-
-            const newEmail = {
-                id: `custom-${Date.now()}`,
-                sender,
-                subject,
-                body,
-                time: 'Just now',
-                label: 'Evaluating...',
-                probability: 0.5,
-                isThreat: true,
-                avatar: sender[0].toUpperCase()
-            };
-
-            currentQueue.unshift(newEmail);
-            activeEmailIndex = 0;
-            closeComposerModal();
-            document.getElementById('custom-scan-form').reset();
-            setMainMode('inbox');
-            renderQueue();
-            runLiveEmailScan(newEmail);
-            showToast('Custom email added & analyzed in cockpit!');
-        });
-
-        // Initialize Cockpit on load
-        window.addEventListener('DOMContentLoaded', () => {
-            renderQueue();
-            if (currentQueue.length > 0) {
-                runLiveEmailScan(currentQueue[0]);
-            }
-        });
     </script>
 </body>
 </html>
