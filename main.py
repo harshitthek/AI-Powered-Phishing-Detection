@@ -112,11 +112,22 @@ def analyze_single_email(sender: str, subject: str, email_text: str, threshold: 
     }
 
 
+from fastapi.responses import JSONResponse, FileResponse
+
 # -----------------------------------------------------------------------------
 # API Endpoints
 # -----------------------------------------------------------------------------
-@app.get("/", tags=["General"])
-def root():
+@app.get("/", tags=["General"], response_class=FileResponse)
+def root_index():
+    """Serves the frontend dashboard directly at the root URL."""
+    html_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
+    if os.path.exists(html_path):
+        return FileResponse(html_path)
+    return JSONResponse({"service": "AI-Powered Phishing Detection API", "version": "2.0.0"})
+
+
+@app.get("/api", tags=["General"])
+def api_info():
     return {
         "service": "AI-Powered Phishing Detection API",
         "version": "2.0.0",
